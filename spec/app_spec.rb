@@ -6,19 +6,34 @@ describe Sinatra::Application do
       app.database[:users].filter(username: 'known_user').empty?
   end
 
+  def hasher
+    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV['SALT'])
+  end
+
   def create_user!
     created_user
   end
 
   def created_user
     @created_user ||= begin
-      User.find(username: 'known_user') || User.create(
-        username: 'known_user',
-        password: '64250fca9eebcfa7259c70bbc5a48fc84579937a',
-        email: 'known-user@example.org',
-        volunteer_id: '1'
-      )
+      found = User.find(username: 'known_user')
+      if found
+        found.password = hasher.hash_password(known_user_password)
+        found.save
+        found
+      else
+        User.create(
+          username: 'known_user',
+          password: hasher.hash_password(known_user_password),
+          email: 'known-user@example.org',
+          volunteer_id: '1'
+        )
+      end
     end
+  end
+
+  def known_user_password
+    @known_user_password ||= 'notasecret' << "#{rand(100..999)}"
   end
 
   def app
@@ -47,8 +62,7 @@ describe Sinatra::Application do
       before :each do
         post '/login',
              username: created_user.username,
-             password: created_user.password
-        $stderr.puts "last_request.session: #{last_request.session.inspect}"
+             password: known_user_password
       end
 
       it 'returns 201' do
@@ -56,11 +70,11 @@ describe Sinatra::Application do
       end
 
       it 'sets the username in session' do
-        expect(last_request.session['username']).to eq('known_user')
+        expect(last_request.session[:username]).to eq('known_user')
       end
 
       it 'sets the user_id in session' do
-        expect(last_request.session['user_id']).to eq(created_user.id)
+        expect(last_request.session[:user_id]).to eq(created_user.id)
       end
 
       it 'sets _li=1 in cookies' do

@@ -5,6 +5,8 @@ require 'sinatra/sequel'
 require 'dalli'
 require 'rack/session/dalli'
 
+require_relative 'globallinks/password_hasher'
+
 if Sinatra::Base.development? || Sinatra::Base.test?
   require 'dotenv'
   Dotenv.load
@@ -20,6 +22,12 @@ set :database, ENV.fetch('DATABASE_URL')
 configure do
   unless ENV['RACK_ENV'] == 'test'
     use Rack::Session::Dalli, cache: Dalli::Client.new
+  end
+end
+
+helpers do
+  def hasher
+    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV.fetch('SALT'))
   end
 end
 
@@ -103,7 +111,7 @@ post '/login' do
 
   user = database[:users].filter(username: params[:username]).first
   halt 404 if user.nil?
-  halt 401 if user[:password] != params[:password]
+  halt 401 if user[:password] != hasher.hash_password(params[:password])
 
   session[:username] = params[:username]
   session[:user_id] = user[:id]
@@ -115,6 +123,7 @@ end
 
 post '/logout' do
   session.clear
+  cookies.clear
   status 201
   json yes: :good
 end

@@ -2,8 +2,12 @@ require 'coveralls'
 require 'simplecov'
 require 'rack/test'
 require 'json'
-require 'globallinks'
 
-ENV['RACK_ENV'] ||= 'test'
+ENV['RACK_ENV'] = 'test'
+ENV['SALT'] = '42'
+
+require 'globallinks'
+require 'globallinks/password_hasher'
+
 SimpleCov.start
 Coveralls.wear!
