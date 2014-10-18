@@ -191,7 +191,8 @@ describe Sinatra::Application do
 
       it 'updates the volunteer\'s hours' do
         volunteer = Volunteer.find(id: '1')
-        volunteer.update(checked_in: true, volunteer_hours: 100, last_checkin: Time.now - 3600)
+        volunteer.update(checked_in: true, volunteer_hours: 100,
+                         last_checkin: Time.now - 3600)
         post '/checkout', nil, {'rack.session' => rack_session}
         volunteer.refresh
         expect(volunteer.volunteer_hours).to eq(101)
