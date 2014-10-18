@@ -8,8 +8,10 @@ GEM
     celluloid (0.16.0)
       timers (~> 4.0.0)
     coderay (1.1.0)
+    daemons (1.1.9)
     diff-lcs (1.2.5)
     docile (1.1.5)
+    eventmachine (1.0.3)
     ffi (1.9.6)
     hitimes (1.2.2)
     listen (2.7.11)
@@ -27,8 +29,6 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    puma (2.8.2)
-      rack (>= 1.1, < 2.0)
     rack (1.5.2)
     rack-protection (1.5.3)
       rack
@@ -73,6 +73,10 @@ GEM
       sequel (>= 3.2.0)
       sinatra (>= 0.9.4)
     slop (3.6.0)
+    thin (1.6.3)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0)
+      rack (~> 1.0)
     tilt (1.4.1)
     timers (4.0.1)
       hitimes
@@ -83,7 +87,6 @@ PLATFORMS
 DEPENDENCIES
   pg
   pry
-  puma
   rake
   rerun
   rspec
@@ -91,3 +94,4 @@ DEPENDENCIES
   simplecov
   sinatra
   sinatra-sequel
+  thin

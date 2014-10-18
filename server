@@ -3,7 +3,7 @@
 RACK_ENV="${RACK_ENV:-development}"
 echo "---> RACK_ENV=$RACK_ENV"
 
-cmd="puma -p ${PORT:-5000} config.ru"
+cmd="rackup -p ${PORT:-5000} config.ru"
 if [[ "$RACK_ENV" == development ]] ; then
   cmd="bundle exec rerun $cmd"
 fi
