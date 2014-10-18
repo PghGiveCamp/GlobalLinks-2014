@@ -5,7 +5,6 @@ env:
 before_script:
 - nvm use 0.10
 - bundle exec rake setup
-- createdb globallinks_travis
 script:
 - bundle exec rake
 - npm test

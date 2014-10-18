@@ -5,6 +5,13 @@ GlobalLinks-2014
 
 ## local development
 
+Doing this should take care of everything for you, but YMMV:
+
+``` bash
+bundle install
+bundle exec rake setup
+```
+
 ### database setup
 
 You'll have to ensure there is a postgresql database available for
