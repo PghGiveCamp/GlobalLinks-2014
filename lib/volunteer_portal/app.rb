@@ -124,11 +124,6 @@ get '/contact' do
   json User[id: session[:user_id]].volunteer
 end
 
-get '/scare' do
-  content_type 'text/plain'
-  "boo\n"
-end
-
 post '/login' do
   halt 400 unless params[:username]
 
