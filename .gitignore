@@ -20,6 +20,8 @@ plugins/
 platform/
 www/
 
+npm-debug.log
+
 # Moar ruby ignores
 .bundle
 vendor

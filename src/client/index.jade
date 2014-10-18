@@ -10,8 +10,6 @@ html(lang='en', ng-app='globallinks')
     link(rel='stylesheet', href='vendors.css')
 
     link(rel='stylesheet', href='/all.css')
-    link(rel='stylesheet', href='/screen.css', media="screen")
-    link(rel='stylesheet', href='/print.css', media="print")
 
     script(src="vendors.js")
 
@@ -22,9 +20,6 @@ html(lang='en', ng-app='globallinks')
                 a.navbar-brand(ui-sref="login") GlobalLinks Volunteer Portal
     .container
         ui-view.slide-left-right(name="main")
-
-
-    script(src="cordova.js")
 
     script(src="templates.js")
     script(src="application.js")
