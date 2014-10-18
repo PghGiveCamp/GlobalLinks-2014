@@ -1,3 +1,4 @@
 angular.module('globallinks', [
-	'globallinks.login'
+	'globallinks.login',
+	'globallinks.contact'
 ]);
