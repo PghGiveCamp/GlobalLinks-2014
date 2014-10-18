@@ -5,7 +5,7 @@ require 'sinatra/sequel'
 require 'dalli'
 require 'rack/session/dalli'
 
-require_relative 'globallinks/password_hasher'
+require_relative 'password_hasher'
 
 if Sinatra::Base.development? || Sinatra::Base.test?
   require 'dotenv'
@@ -90,7 +90,7 @@ helpers do
   end
 
   def hasher
-    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV.fetch('SALT'))
+    @hasher ||= VolunteerPortal::PasswordHasher.new(salt: ENV.fetch('SALT'))
   end
 
   def fetch_user(username)

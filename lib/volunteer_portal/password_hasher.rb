@@ -1,4 +1,4 @@
-module GlobalLinks
+module VolunteerPortal
   class PasswordHasher
     def initialize(options = {})
       @salt = options.fetch(:salt)

@@ -1,4 +1,4 @@
-describe GlobalLinks::PasswordHasher do
+describe VolunteerPortal::PasswordHasher do
   subject { described_class.new(salt: 'abc123') }
 
   it 'hashes well' do

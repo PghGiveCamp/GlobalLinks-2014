@@ -7,7 +7,7 @@ describe Sinatra::Application do
   end
 
   def hasher
-    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV['SALT'])
+    @hasher ||= VolunteerPortal::PasswordHasher.new(salt: ENV['SALT'])
   end
 
   def create_user!

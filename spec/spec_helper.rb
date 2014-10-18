@@ -6,8 +6,8 @@ require 'json'
 ENV['RACK_ENV'] = 'test'
 ENV['SALT'] = '42'
 
-require 'globallinks'
-require 'globallinks/password_hasher'
+require 'volunteer_portal/app'
+require 'volunteer_portal/password_hasher'
 
 Volunteer.unrestrict_primary_key
 
