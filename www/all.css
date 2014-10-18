@@ -1,3 +1,80 @@
-label {
-  font-size: 300%;
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+.custom-msg {
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 1em;
+  padding: 1em;
+}
+.custom-button,
+#checkin button {
+  background: #1c95c0;
+  color: white;
+  text-shadow: none;
+  letter-spacing: 0.125em;
+}
+#checkin .logo {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 1.5em;
+}
+#checkin button {
+  margin-bottom: 1.25em;
+  padding: 1.5em;
+  font-size: 1.5em;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+.custom-msg {
+  border-radius: 5px;
+  text-align: center;
+  margin-top: 1em;
+  padding: 1em;
+}
+.custom-button,
+#login .form-wrapper button {
+  background: #1c95c0;
+  color: white;
+  text-shadow: none;
+  letter-spacing: 0.125em;
+}
+#login .logo {
+  width: 100%;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+#login .title {
+  padding-bottom: 0.25em;
+}
+#login .form-wrapper {
+  background-color: #eaeaea;
+  border-radius: 5px;
+  text-align: center;
+  padding-bottom: 10px;
+}
+#login .form-wrapper button {
+  width: 100%;
+  margin-bottom: 5px;
+}
+#login .actions-wrapper {
+  padding-bottom: 5px;
+}
+#login .actions-wrapper span {
+  display: block;
+  padding-bottom: 1em;
+}
+#login .actions-wrapper .sign-up {
+  font-size: 1.15em;
+  padding-bottom: 1.75em;
+}
+#login .actions-wrapper .reset-password {
+  font-size: 0.95em;
+}
+#login .actions-wrapper hr {
+  border-color: #d5d5d5;
 }
