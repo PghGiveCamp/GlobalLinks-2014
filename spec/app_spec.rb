@@ -22,6 +22,7 @@ describe Sinatra::Application do
     if app.database[:volunteers].filter(id: '1').empty?
       Volunteer.create(id: '1')
     end
+    @created_user
   end
 
   def app

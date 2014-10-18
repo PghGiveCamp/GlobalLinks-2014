@@ -1,4 +1,9 @@
+inherit_from: .rubocop_todo.yml
+
 AllCops:
   Exclude:
   - "node_modules/**/*"
   - "vendor/bundle/**/*"
+
+Style/Documentation:
+  Enabled: false

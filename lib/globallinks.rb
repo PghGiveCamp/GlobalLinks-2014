@@ -133,7 +133,7 @@ post '/logout' do
 end
 
 post '/checkin' do
-  halt 401 if !signed_in?
+  halt 401 unless signed_in?
   halt 409 if current_user.volunteer.checked_in
 
   current_user.volunteer.update(checked_in: true, last_checkin: Time.now)
