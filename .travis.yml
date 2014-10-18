@@ -1,4 +1,9 @@
 language: ruby
+env:
+  global:
+  - DATABASE_URL='postgres://postgres@localhost:5432/globallinks_travis'
+before_script:
+- createdb globallinks_travis
 deploy:
   provider: heroku
   api_key:
