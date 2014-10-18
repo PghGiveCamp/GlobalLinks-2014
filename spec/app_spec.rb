@@ -22,6 +22,10 @@ describe Sinatra::Application do
     )
   end
 
+  let :rack_session do
+    { username: created_user.username, user_id: created_user.id }
+  end
+
   def known_user_password
     @known_user_password ||= 'notasecret' << "#{rand(100..999)}"
   end
@@ -86,7 +90,7 @@ describe Sinatra::Application do
 
     context 'when logged in' do
       it 'returns the contact record' do
-        get '/contact', {}, 'rack.session' => { user_id: created_user.id }
+        get '/contact', {}, 'rack.session' => rack_session
         expect(last_response).to be_ok
         volunteer = JSON.parse(last_response.body, symbolize_names: true)
         expect(volunteer[:first_name]).to eq('Jane')
@@ -109,10 +113,6 @@ describe Sinatra::Application do
     end
 
     context 'when user is logged in' do
-      let :rack_session do
-        { username: created_user.username, user_id: created_user.id }
-      end
-
       it 'returns 200 OK' do
         post '/contact/checkin', nil, 'rack.session' => rack_session
         expect(last_response).to be_ok
@@ -153,10 +153,6 @@ describe Sinatra::Application do
     end
 
     context 'when user is logged in' do
-      let :rack_session do
-        { username: created_user.username, user_id: created_user.id }
-      end
-
       context 'when user is checked in' do
         before do
           volunteer.update(checked_in: true, last_checkin: Time.now - 3600)
