@@ -176,31 +176,37 @@ describe Sinatra::Application do
         { username: created_user.username, user_id: created_user.id }
       end
 
-      it 'returns 200 OK' do
-        post '/checkout', nil, 'rack.session' => rack_session
-        expect(last_response).to be_ok
+      let :volunteer do
+        Volunteer.find(id: '1')
       end
 
-      it 'updates the volunteer\'s checkout property' do
-        volunteer = Volunteer.find(id: '1')
-        volunteer.update(checked_in: true)
-        post '/checkout', nil, 'rack.session' => rack_session
-        volunteer.refresh
-        expect(volunteer.checked_in).to be_falsey
-      end
-
-      it 'updates the volunteer\'s hours' do
-        volunteer = Volunteer.find(id: '1')
-        volunteer.update(checked_in: true, volunteer_hours: 100,
-                         last_checkin: Time.now - 3600)
-        post '/checkout', nil, 'rack.session' => rack_session
-        volunteer.refresh
-        expect(volunteer.volunteer_hours).to eq(101)
-      end
-
-      context 'when volunteer is already checked out' do
+      context 'when user is checked in' do
         before do
-          Volunteer.find(id: '1').update(checked_in: false)
+          volunteer.update(checked_in: true, last_checkin: Time.now - 3600)
+        end
+
+        it 'returns 200 OK' do
+          post '/checkout', nil, 'rack.session' => rack_session
+          expect(last_response).to be_ok
+        end
+
+        it 'updates the volunteer\'s checkout property' do
+          post '/checkout', nil, 'rack.session' => rack_session
+          volunteer.refresh
+          expect(volunteer.checked_in).to be_falsey
+        end
+
+        it 'updates the volunteer\'s hours' do
+          volunteer.update(volunteer_hours: 100)
+          post '/checkout', nil, 'rack.session' => rack_session
+          volunteer.refresh
+          expect(volunteer.volunteer_hours).to eq(101)
+        end
+      end
+
+      context 'when volunteer is not checked in' do
+        before do
+          volunteer.update(checked_in: false)
         end
 
         it 'returns 409 Conflict' do
