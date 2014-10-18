@@ -1,2 +1,150 @@
 .Contact
   h2 Contact Details
+  form.horizontal-form(role="form")
+    .form-group
+      label.col-md-2.control-label(for="name") Name
+      .col-md-10
+        input.form-control(
+          type="text"
+          name="name"
+          disabled
+          ng-model="volunteer.name"
+        )
+    .form-group
+      label.col-md-2.control-label(for="street") Address
+      .form-group
+        .col-md-5
+          input.form-control(
+            type="text"
+            name="street"
+            ng-model="volunteer.address.street"
+          )
+        .col-md-3
+          input.form-control(
+            type="text"
+            name="city"
+            ng-model="volunteer.address.city"
+            placeholder="city"
+          )
+        .col-md-1
+          select.form-control(
+            name="state"
+            ng-model="volunteer.address.state"
+            ng-options="state for state in stateAbbreviations"
+          )
+        .col-md-1
+          label.sr-only(for="zip")
+          input.form-control(
+            type="text"
+            name="zip"
+            ng-model="volunteer.address.zip"
+            placeholder="12345"
+          )
+    .form-group
+      label.col-md-2.control-label(for="homePhone") Phone (H):
+      .col-md-2
+        input.form-control(
+          type="tel"
+          name="homePhone"
+          ng-model="volunteer.home.phone"
+          placeholder="Home Phone"
+        )
+      label.col-md-2.control-label(for="homeEmail") Email (H):
+      .col-md-6
+        input.form-control(
+          type="email"
+          name="homePhone"
+          ng-model="volunteer.home.email"
+          placeholder="volunteer@globallinks.org"
+        )
+    .form-group
+      label.col-md-2.control-label(for="workPhone") Phone (W):
+      .col-md-2
+        input.form-control(
+          type="tel"
+          name="workPhone"
+          ng-model="volunteer.work.phone"
+          placeholder="Work Phone"
+        )
+      label.col-md-2.control-label(for="workEmail") Email (W):
+      .col-md-6
+        input.form-control(
+          type="email"
+          name="workEmail"
+          ng-model="volunteer.work.email"
+          placeholder="volunteer@globallinks.org"
+        )
+    .form-group
+      label.col-md-2.control-label(for="mobilePhone") Phone (M):
+      .col-md-2
+        input.form-control(
+          type="tel"
+          name="mobilePhone"
+          ng-model="volunteer.mobile.phone"
+          placeholder="Mobile Phone"
+        )
+      label.col-md-2.control-label(for="mobileEmail") Email (M):
+      .col-md-6
+        input.form-control(
+          type="email"
+          name="mobileEmail"
+          ng-model="volunteer.mobile.email"
+          placeholder="volunteer@globallinks.org"
+        )
+    .form-group
+      label.col-md-2.control-label(for="emergency") Emergency Contact:
+      .col-md-4
+        input.form-control(
+          type="text"
+          name="emergency"
+          ng-model="volunteer.emergency.contact"
+          placeholder="Name"
+        )
+      label.col-md-1.control-label(for="emergencyRelationship") Relationship:
+      .col-md-2
+        input.form-control(
+          type="text"
+          name="emergencyRelationship"
+          ng-model="volunteer.emergency.relationship"
+          placeholder="Relationship"
+        )
+      label.col-md-1.control-label(for="emergencyPhone") Phone:
+      .col-md-2
+        input.form-control(
+          type="tel"
+          name="emergencyPhone"
+          ng-model="volunteer.emergency.phone"
+          placeholder="Phone"
+        )
+    .form-group
+      label.col-md-12
+        input(
+          type="checkbox"
+          ng-model="volunteer.waiver.clause1"
+          ng-disabled="volunteer.waiver.clause1"
+        )
+        | Signed Waiver 1
+    .form-group
+      label.col-md-12
+        input(
+          type="checkbox"
+          ng-model="volunteer.waiver.clause2"
+          ng-disabled="volunteer.waiver.clause2"
+        )
+        | Signed Waiver 2
+    .form-group
+      label.col-md-12
+        input(
+          type="checkbox"
+          ng-model="volunteer.waiver.photo"
+          ng-disabled="volunteer.waiver.photo"
+        )
+        | Photo Release
+    .form-group
+      label.col-md-12
+        input(
+          type="checkbox"
+          ng-model="volunteer.waiver.all"
+          ng-disabled="volunteer.waiver.all"
+        )
+        | I Agree to All
