@@ -16,19 +16,19 @@
         input.form-control(
           type="text"
           name="street"
-          ng-model="volunteer.address.street"
+          ng-model="volunteer.address"
         )
       .col-md-3
         input.form-control(
           type="text"
           name="city"
-          ng-model="volunteer.address.city"
+          ng-model="volunteer.city"
           placeholder="city"
         )
       .col-md-1
         select.form-control(
           name="state"
-          ng-model="volunteer.address.state"
+          ng-model="volunteer.state"
           ng-options="state for state in stateAbbreviations"
         )
       .col-md-2
@@ -36,7 +36,7 @@
         input.form-control(
           type="text"
           name="zip"
-          ng-model="volunteer.address.zip"
+          ng-model="volunteer.zip"
           placeholder="12345"
         )
     .form-group.row
@@ -45,7 +45,7 @@
         input.form-control(
           type="tel"
           name="homePhone"
-          ng-model="volunteer.home.phone"
+          ng-model="volunteer.home_phone"
           placeholder="Home Phone"
         )
       label.col-md-2.control-label(for="homeEmail") Email (H):
@@ -53,7 +53,7 @@
         input.form-control(
           type="email"
           name="homePhone"
-          ng-model="volunteer.home.email"
+          ng-model="volunteer.home_email"
           placeholder="volunteer@globallinks.org"
         )
     .form-group.row
@@ -62,7 +62,7 @@
         input.form-control(
           type="tel"
           name="workPhone"
-          ng-model="volunteer.work.phone"
+          ng-model="volunteer.work_phone"
           placeholder="Work Phone"
         )
       label.col-md-2.control-label(for="workEmail") Email (W):
@@ -70,7 +70,7 @@
         input.form-control(
           type="email"
           name="workEmail"
-          ng-model="volunteer.work.email"
+          ng-model="volunteer.work_email"
           placeholder="volunteer@globallinks.org"
         )
     .form-group.row
@@ -79,7 +79,7 @@
         input.form-control(
           type="tel"
           name="mobilePhone"
-          ng-model="volunteer.cell.phone"
+          ng-model="volunteer.mobile_phone"
           placeholder="Cell Phone"
         )
       label.col-md-2.control-label(for="mobileEmail") Email (C):
@@ -87,7 +87,7 @@
         input.form-control(
           type="email"
           name="mobileEmail"
-          ng-model="volunteer.cell.email"
+          ng-model="volunteer.alternate_email"
           placeholder="volunteer@globallinks.org"
         )
     .form-group.row
@@ -96,7 +96,7 @@
         input.form-control(
           type="text"
           name="emergency"
-          ng-model="volunteer.emergency.name"
+          ng-model="volunteer.emergency_name"
           placeholder="Name"
         )
       label.col-md-1.control-label(for="emergencyRelationship") Relation:
@@ -104,7 +104,7 @@
         input.form-control(
           type="text"
           name="emergencyRelationship"
-          ng-model="volunteer.emergency.relationship"
+          ng-model="volunteer.emergency_relationship"
           placeholder="Relationship"
         )
       label.col-md-1.control-label(for="emergencyPhone") Phone:
@@ -112,14 +112,14 @@
         input.form-control(
           type="tel"
           name="emergencyPhone"
-          ng-model="volunteer.emergency.phone"
+          ng-model="volunteer.emergency_phone"
           placeholder="Phone"
         )
       label.col-md-1.control-label(for="emergencyPhoneType") Type:
       .col-md-1
         select.form-control(
           name="emergencyPhoneType"
-          ng-model="volunteer.emergency.phoneType"
+          ng-model="volunteer.emergency_phone_type"
           ng-options="type for type in [ 'Home', 'Work', 'Cell' ]"
         )
     .row
@@ -150,20 +150,20 @@
               label
                 input(
                   type="checkbox"
-                  ng-model="volunteer.waiver.photo"
-                  ng-disabled="volunteer.waiver.photo"
+                  ng-model="volunteer.waiver.all"
+                  ng-disabled="!(volunteer.waiver.clause1 && volunteer.waiver.clause2) || volunteer.waiver.all"
                 )
-                | Photo Release
+                | I Agree to All Waivers
         .form-group.row
           .col-md-12
             .checkbox
               label
                 input(
                   type="checkbox"
-                  ng-model="volunteer.waiver.all"
-                  ng-disabled="volunteer.waiver.all"
+                  ng-model="volunteer.waiver.photo"
+                  ng-disabled="volunteer.waiver.photo"
                 )
-                | I Agree to All
+                | Photo Release
     .row
       .col-md-6.col-md-offset-3
         button.btn.btn-block.btn-primary(
