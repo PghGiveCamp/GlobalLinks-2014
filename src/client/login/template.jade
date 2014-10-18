@@ -1,2 +1,12 @@
-div
-	h2.login Login
+div#login.container-fluid
+	.row.col-md-5.col-centered.form-wrapper
+		h2.title Member Login
+		form(role="form")
+			.form-group
+				input(type="text", for='username', placeholder="Username or Email")#username.form-control
+			.form-group
+				input(type="password", for='username', placeholder="Password")#password.form-control
+			button(type="submit").btn.btn-default.col-md-10.col-centered LOGIN
+			a(ui-sref='contact') Forgot Username/Password?
+			br
+			a(ui-sref='contact') Create New Account

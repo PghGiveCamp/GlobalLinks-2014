@@ -1,5 +1,23 @@
-@import "./node_modules/rupert-config-angular-bootstrap/node_modules/bootstrap/less/variables";
+@import "./src/client/variables.less";
+@import "./src/client/base.less";
 
-.Login {
-	opacity: 1;
+#login {
+	.form-wrapper {
+		background-color: @lightGray;
+		border-radius: 5px;
+		// padding-bottom: 1.5em;
+		text-align: center;
+
+	}
+	.title {
+		// text-align: center;
+	}
+	form button {
+		display: block;
+		background: @buttonBackgound;
+		color: white;
+		text-shadow: none;
+		letter-spacing: 0.125em;
+		margin-bottom: 15px;
+	}
 }
