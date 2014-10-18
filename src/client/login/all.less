@@ -5,7 +5,6 @@
 	.form-wrapper {
 		background-color: @lightGray;
 		border-radius: 5px;
-		// padding-bottom: 1.5em;
 		text-align: center;
 
 	}
@@ -13,11 +12,28 @@
 		// text-align: center;
 	}
 	form button {
-		display: block;
+		// display: block;
 		background: @buttonBackgound;
 		color: white;
 		text-shadow: none;
 		letter-spacing: 0.125em;
-		margin-bottom: 15px;
+		width: 100%;
+		margin-bottom: 5px;
 	}
+	.actions-wrapper {
+		padding-bottom: 5px;
+		.sign-up {
+			display: block;
+			font-size: 1.25em;
+			padding-bottom: 1em;
+		}
+		.forgot-password {
+			font-size: 0.95em;
+		}
+		hr {
+			border-color: lighten(@gray, 50%);
+		}
+	}
+	
 }
+
