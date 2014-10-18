@@ -10,6 +10,7 @@ gem 'sinatra-sequel'
 
 group :test do
   gem 'pry'
+  gem 'rerun'
   gem 'rspec'
   gem 'rubocop'
   gem 'simplecov'

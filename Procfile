@@ -1,1 +1,1 @@
-web: puma -p $PORT config.ru
+web: ./server
