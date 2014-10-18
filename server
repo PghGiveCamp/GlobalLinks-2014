@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source .memcache.env
+
 RACK_ENV="${RACK_ENV:-development}"
 echo "---> RACK_ENV=$RACK_ENV"
 
