@@ -131,9 +131,9 @@ describe Sinatra::Application do
           volunteer.update(checked_in: true)
         end
 
-        it 'returns 409 Conflict' do
+        it 'returns 412 Precondition failed' do
           post '/contact/checkin', nil, 'rack.session' => rack_session
-          expect(last_response.status).to eq(409)
+          expect(last_response.status).to eq(412)
         end
       end
     end
@@ -186,9 +186,9 @@ describe Sinatra::Application do
           volunteer.update(checked_in: false)
         end
 
-        it 'returns 409 Conflict' do
+        it 'returns 412 Precondition failed' do
           post '/contact/checkout', nil, 'rack.session' => rack_session
-          expect(last_response.status).to eq(409)
+          expect(last_response.status).to eq(412)
         end
       end
     end
