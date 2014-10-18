@@ -48,6 +48,7 @@ describe Sinatra::Application do
         post '/login',
              username: created_user.username,
              password: created_user.password
+        $stderr.puts "last_request.session: #{last_request.session.inspect}"
       end
 
       it 'returns 201' do
