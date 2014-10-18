@@ -6,6 +6,13 @@ GlobalLinks-2014
 
 ## local development
 
+There is a Vagrantfile provided that should get you to a runnable state:
+```bash
+vagrant up
+```
+
+Otherwise:
+
 Doing this should take care of everything for you, but YMMV:
 
 ``` bash
@@ -46,11 +53,6 @@ for serving the sinatra app.  The sinatra app is served via the
 ``` bash
 # run the thing locally
 ./server
-```
-
-``` cmd
-; or, on windows:
-server
 ```
 
 #### client
