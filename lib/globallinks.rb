@@ -69,9 +69,22 @@ migration 'create volunteer table' do
 end
 
 class User < Sequel::Model
+  def volunteer
+    @volunteer ||= Volunteer.find(id: volunteer_id)
+  end
 end
 
 class Volunteer < Sequel::Model
+end
+
+helpers do
+  def current_user
+    @current_user ||= User.find(username: session[:username])
+  end
+
+  def signed_in?
+    !current_user.nil?
+  end
 end
 
 get '/' do
