@@ -1,0 +1,14 @@
+div.login-form
+	h2.title Volunteer Login
+	form(role="form")
+		.form-group
+			input(type="text", for='username', placeholder="Email Address")#username.form-control
+		.form-group
+			input(type="password", for='password', placeholder="Password")#password.form-control
+		.col-md-12.actions-wrapper
+			button(type="submit").btn.btn-default.btn-block LOGIN
+			hr
+			span.sign-up
+				a(ui-sref='auth.signup') Sign up
+			span.reset-password
+				a(ui-sref='auth.resetpassword') Forgot password?

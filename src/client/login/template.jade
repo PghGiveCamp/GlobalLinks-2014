@@ -1,15 +1,7 @@
 div#login.container-fluid
+	.row.col-md-4.col-centered
+		img(src="/assets/images/gl-logo.png").logo
 	.row.col-md-4.col-centered.form-wrapper
-		h2.title Member Login
-		form(role="form")
-			.form-group
-				input(type="text", for='username', placeholder="Username or Email")#username.form-control
-			.form-group
-				input(type="password", for='username', placeholder="Password")#password.form-control
-			.col-md-12.col-centered.actions-wrapper
-				button(type="submit").btn.btn-default LOGIN
-				hr
-				span.sign-up
-					a(ui-sref='contact') Sign up
-				span.forgot-password
-					a(ui-sref='') Forgot password?
+		ui-view(name="login")
+	.row.col-md-4.col-centered
+		p.text-danger.bg-danger
