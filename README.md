@@ -13,10 +13,10 @@ local development.  The server requires that `DATABASE_URL` is set.
 
 ``` bash
 # Set the DATABASE_URL var in your local environment file.
-echo DATABASE_URL='postgres://localhost:5432/globallinks' >> .env
+echo DATABASE_URL='postgres://globallinks:globallinks@localhost:5432/globallinks' >> .env
 
 # Or, export the DATABASE_URL var to your current shell environment.
-export DATABASE_URL='postgres://localhost:5432/globallinks'
+export DATABASE_URL='postgres://globallinks:globallinks@localhost:5432/globallinks'
 
 # e.g.:
 createdb globallinks
