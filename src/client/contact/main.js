@@ -27,7 +27,7 @@ angular.module('globallinks.contact', [
       email: 'davidsouther@gmail.com'
     },
     work: {},
-    mobile: {
+    cell: {
       phone: "406 545 9223"
     },
     emergency: {
