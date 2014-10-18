@@ -6,23 +6,38 @@ describe Sinatra::Application do
       app.database[:users].filter(username: 'known_user').empty?
   end
 
+  def hasher
+    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV['SALT'])
+  end
+
   def create_user!
     created_user
   end
 
   def created_user
     @created_user ||= begin
-      User.find(username: 'known_user') || User.create(
-        username: 'known_user',
-        password: '64250fca9eebcfa7259c70bbc5a48fc84579937a',
-        email: 'known-user@example.org',
-        volunteer_id: '1'
-      )
+      found = User.find(username: 'known_user')
+      if found
+        found.password = hasher.hash_password(known_user_password)
+        found.save
+        found
+      else
+        User.create(
+          username: 'known_user',
+          password: hasher.hash_password(known_user_password),
+          email: 'known-user@example.org',
+          volunteer_id: '1'
+        )
+      end
     end
     if app.database[:volunteers].filter(id: '1').empty?
       Volunteer.create(id: '1')
     end
     @created_user
+  end
+
+  def known_user_password
+    @known_user_password ||= 'notasecret' << "#{rand(100..999)}"
   end
 
   def app
@@ -51,7 +66,7 @@ describe Sinatra::Application do
       before :each do
         post '/login',
              username: created_user.username,
-             password: created_user.password
+             password: known_user_password
         last_request.session.each do |key, value|
           last_request.session[key.to_sym] = value
         end
@@ -89,21 +104,19 @@ describe Sinatra::Application do
     end
 
     context 'when user is logged in' do
-      before do
-        post '/login',
-             username: 'known_user',
-             password: '64250fca9eebcfa7259c70bbc5a48fc84579937a'
+      let :rack_session do
+        {username: created_user.username}
       end
 
       it 'returns 200 OK' do
-        post '/checkin'
+        post '/checkin', nil, {'rack.session' => rack_session}
         expect(last_response).to be_ok
       end
 
       it 'updates the volunteer\'s checkin property' do
         volunteer = Volunteer.find(id: '1')
         volunteer.update(checked_in: false)
-        post '/checkin'
+        post '/checkin', nil, {'rack.session' => rack_session}
         volunteer.refresh
         expect(volunteer.checked_in).to be_truthy
         expect(volunteer.last_checkin).to_not be_nil
@@ -115,7 +128,7 @@ describe Sinatra::Application do
         end
 
         it 'returns 409 Conflict' do
-          post '/checkin'
+          post '/checkin', nil, {'rack.session' => rack_session}
           expect(last_response.status).to eq(409)
         end
       end

@@ -5,6 +5,8 @@ require 'sinatra/sequel'
 require 'dalli'
 require 'rack/session/dalli'
 
+require_relative 'globallinks/password_hasher'
+
 if Sinatra::Base.development? || Sinatra::Base.test?
   require 'dotenv'
   Dotenv.load
@@ -79,11 +81,19 @@ end
 
 helpers do
   def current_user
-    @current_user ||= User.find(username: session[:username])
+    @current_user ||= fetch_user(session[:username])
   end
 
   def signed_in?
     !current_user.nil?
+  end
+
+  def hasher
+    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV.fetch('SALT'))
+  end
+
+  def fetch_user(username)
+    User.find(username: username)
   end
 end
 
@@ -114,9 +124,9 @@ end
 post '/login' do
   halt 400 unless params[:username]
 
-  user = database[:users].filter(username: params[:username]).first
+  user = fetch_user(params[:username])
   halt 404 if user.nil?
-  halt 401 if user[:password] != params[:password]
+  halt 401 if user[:password] != hasher.hash_password(params[:password])
 
   session[:username] = params[:username]
   session[:user_id] = user[:id]
@@ -128,6 +138,7 @@ end
 
 post '/logout' do
   session.clear
+  cookies.clear
   status 201
   json yes: :good
 end
