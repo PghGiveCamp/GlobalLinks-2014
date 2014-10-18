@@ -3,7 +3,11 @@ env:
   global:
   - DATABASE_URL='postgres://postgres@localhost:5432/globallinks_travis'
 before_script:
-- createdb globallinks_travis
+- nvm use 0.10
+- bundle exec rake setup
+script:
+- bundle exec rake
+- npm test
 deploy:
   provider: heroku
   api_key:
