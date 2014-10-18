@@ -12,7 +12,7 @@
         )
     .form-group.row
       label.col-md-2.control-label(for="street") Address
-      .col-md-5
+      .col-md-4
         input.form-control(
           type="text"
           name="street"
@@ -31,7 +31,7 @@
           ng-model="volunteer.address.state"
           ng-options="state for state in stateAbbreviations"
         )
-      .col-md-1
+      .col-md-2
         label.sr-only(for="zip")
         input.form-control(
           type="text"
@@ -99,7 +99,7 @@
           ng-model="volunteer.emergency.name"
           placeholder="Name"
         )
-      label.col-md-1.control-label(for="emergencyRelationship") Relationship:
+      label.col-md-1.control-label(for="emergencyRelationship") Relation:
       .col-md-2
         input.form-control(
           type="text"
@@ -122,44 +122,50 @@
           ng-model="volunteer.emergency.phoneType"
           ng-options="type for type in [ 'Home', 'Work', 'Cell' ]"
         )
-
-    .form-group.row
-      .col-md-12
-        .checkbox
-          p
-            input(
-              type="checkbox"
-              ng-model="volunteer.waiver.clause1"
-              ng-disabled="volunteer.waiver.clause1"
-            )
-            | Signed Waiver 1
-    .form-group.row
-      .col-md-12
-        .checkbox
-          p
-            input(
-              type="checkbox"
-              ng-model="volunteer.waiver.clause2"
-              ng-disabled="volunteer.waiver.clause2"
-            )
-            | Signed Waiver 2
-    .form-group.row
-      .col-md-12
-        .checkbox
-          p
-            input(
-              type="checkbox"
-              ng-model="volunteer.waiver.photo"
-              ng-disabled="volunteer.waiver.photo"
-            )
-            | Photo Release
-    .form-group.row
-      .col-md-12
-        .checkbox
-          p
-            input(
-              type="checkbox"
-              ng-model="volunteer.waiver.all"
-              ng-disabled="volunteer.waiver.all"
-            )
-            | I Agree to All
+    .row
+      .col-md-6.col-md-offset-3
+        .form-group.row
+          .col-md-12
+            .checkbox
+              label
+                input(
+                  type="checkbox"
+                  ng-model="volunteer.waiver.clause1"
+                  ng-disabled="volunteer.waiver.clause1"
+                )
+                | I Agree to Waiver 1
+        .form-group.row
+          .col-md-12
+            .checkbox
+              label
+                input(
+                  type="checkbox"
+                  ng-model="volunteer.waiver.clause2"
+                  ng-disabled="volunteer.waiver.clause2"
+                )
+                | Signed Waiver 2
+        .form-group.row
+          .col-md-12
+            .checkbox
+              label
+                input(
+                  type="checkbox"
+                  ng-model="volunteer.waiver.photo"
+                  ng-disabled="volunteer.waiver.photo"
+                )
+                | Photo Release
+        .form-group.row
+          .col-md-12
+            .checkbox
+              label
+                input(
+                  type="checkbox"
+                  ng-model="volunteer.waiver.all"
+                  ng-disabled="volunteer.waiver.all"
+                )
+                | I Agree to All
+    .row
+      .col-md-6.col-md-offset-3
+        button.btn.btn-block.btn-primary(
+          ng-click="volunteer.$save()"
+        ) Update Contact Information

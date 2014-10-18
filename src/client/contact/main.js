@@ -1,6 +1,7 @@
 angular.module('globallinks.contact', [
   'ui.router',
-  'contact.template'
+  'contact.template',
+  'globallinks.contact.service'
 ])
 .config(function($stateProvider){
   $stateProvider.state({
@@ -14,33 +15,8 @@ angular.module('globallinks.contact', [
     }
   });
 })
-.controller('ContactCtrl', function($scope, StateAbbrvs){
-  $scope.volunteer = {
-    name: "David Souther",
-    address: {
-      street: "401 Taylor St",
-      city: "Pittsburgh",
-      state: "PA",
-      zip: "15224"
-    },
-    home: {
-      email: 'davidsouther@gmail.com'
-    },
-    work: {},
-    cell: {
-      phone: "406 545 9223"
-    },
-    emergency: {
-      name: "Annie Levine",
-      relationship: "Fiancee"
-    },
-    waiver: {
-      clause1: false,
-      clause2: false,
-      photo: false,
-      all: false
-    }
-  };
+.controller('ContactCtrl', function($scope, ContactSvc, StateAbbrvs){
+  $scope.volunteer = ContactSvc.currentUser;
   $scope.stateAbbreviations = StateAbbrvs;
 })
 .value('StateAbbrvs', [

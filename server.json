@@ -11,6 +11,7 @@
   },
   "tls": false,
   "routing": [
-    "./src/assets/route.coffee"
+    "./src/assets/route.coffee",
+    "./src/apiTestServer/testRoutes.coffee"
   ]
 }
