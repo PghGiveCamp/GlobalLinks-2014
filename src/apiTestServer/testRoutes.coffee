@@ -22,7 +22,7 @@ module.exports = (app, config)->
         all: no
   app.post '/contact', (q, r)->
     r.status(200).send()
-    app.post '/contact/checkin', (q, r)->
+  app.post '/contact/checkin', (q, r)->
     r.status(200).send()
   app.post '/contact/checkout', (q, r)->
     r.status(200).send()
