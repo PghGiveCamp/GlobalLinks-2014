@@ -1,1 +1,8 @@
 language: ruby
+deploy:
+  provider: heroku
+  api_key:
+    secure: BoVXgTke76YiBTG/qjBf2HpcuXIrz82eF60bKzhRRrvQpAwuZ9yB/mWjXekOEK7zNIUjjvWLrZUNO/gXi/euqXVydE8DfeL+lwxmI8OKNUvySzGebKgScIq8RLY4+fqRamb3du4toCxOTZzEsWRethL3Wy/sV3ZaJWIbiKee89Y=
+  app: calm-retreat-8688
+  on:
+    repo: PghGiveCamp/GlobalLinks-2014
