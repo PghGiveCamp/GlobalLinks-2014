@@ -26,3 +26,8 @@ module.exports = (app, config)->
     r.status(200).send()
   app.post '/contact/checkout', (q, r)->
     r.status(200).send()
+  app.post '/login', (q, r)->
+    if q.body.password is 'password'
+      r.json { username: q.body.username }
+    else
+      r.status(401).send()

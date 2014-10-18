@@ -1,5 +1,6 @@
 angular.module('globallinks.login.directive', [
 	'ui.router',
+	'globallinks.login.service',
 	'login.template',
 	'login.base.template',
 	'login.resetpassword.template',
@@ -20,7 +21,22 @@ angular.module('globallinks.login.directive', [
 		url: '/login',
 		views: {
 			'login': {
-				templateUrl: 'login/base'
+				templateUrl: 'login/base',
+				controller: function($scope, $state, LoginSvc){
+					$scope.username = '';
+					$scope.password = '';
+					$scope.error = null;
+					$scope.login = function(){
+						LoginSvc.login($scope.username, $scope.password).then(
+							function(user){
+								$state.go('checkin');
+							},
+							function(error){
+								$scope.error = error;
+							}
+						)
+					};
+				}
 			}
 		}
 	},

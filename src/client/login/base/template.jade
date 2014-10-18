@@ -2,11 +2,11 @@ div.login-form
 	h2.title Volunteer Login
 	form(role="form")
 		.form-group
-			input(type="text", for='username', placeholder="Email Address")#username.form-control
+			input(type="text", for='username', placeholder="Username", ng-model="username")#username.form-control
 		.form-group
-			input(type="password", for='password', placeholder="Password")#password.form-control
+			input(type="password", for='password', placeholder="Password", ng-model="password")#password.form-control
 		.col-md-12.actions-wrapper
-			button(type="submit").btn.btn-default.btn-block LOGIN
+			button(type="submit", ng-click="login()").btn.btn-default.btn-block LOGIN
 			hr
 			span.sign-up
 				a(ui-sref='auth.signup') Already a volunteer, but need an account?

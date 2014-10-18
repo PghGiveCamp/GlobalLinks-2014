@@ -3,5 +3,5 @@ div#login.container-fluid
 		img(src="/assets/images/gl-logo.png").logo
 	.row.col-md-4.col-centered.form-wrapper
 		ui-view(name="login")
-	.row.col-md-4.col-centered
-		p.text-danger.bg-danger.custom-msg
+	.row.col-md-4.col-centered(ng-if="loginError")
+		p.text-danger.bg-danger.custom-msg {{ loginError }}
