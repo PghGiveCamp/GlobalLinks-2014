@@ -6,7 +6,13 @@ angular.module('globallinks.contact.service', [
     checkout: { method: 'POST', url: '/contact/checkout' }
   });
 
-  Contact.currentUser = Contact.get();
+  var u = Contact.currentUser = Contact.get();
+
+  Object.defineProperty(Contact.currentUser, 'name', {
+    get: function(){
+      return (u.first_name || '') + ' ' + (u.last_name || '');
+    }
+  })
 
   return Contact;
 });

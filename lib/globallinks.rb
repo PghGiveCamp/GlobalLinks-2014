@@ -1,5 +1,6 @@
 require 'json'
 require 'sinatra'
+require 'sinatra/cookies'
 require 'sinatra/json'
 require 'sinatra/sequel'
 require 'dalli'
@@ -12,12 +13,15 @@ end
 
 set :root, File.expand_path('../../', __FILE__)
 set :public_folder, -> { File.join(root, 'www') }
+set :cookie_options, httponly: false
 enable :static
 
 set :database, ENV.fetch('DATABASE_URL')
 
 configure do
-  use Rack::Session::Dalli, cache: Dalli::Client.new
+  unless ENV['RACK_ENV'] == 'test'
+    use Rack::Session::Dalli, cache: Dalli::Client.new
+  end
 end
 
 migration 'create users table' do
@@ -114,6 +118,9 @@ post '/login' do
   halt 401 if user[:password] != params[:password]
 
   session[:username] = params[:username]
+  session[:user_id] = user[:id]
+  cookies[:_li] = '1'
+
   status 201
   json yes: :good, username: params[:username]
 end
