@@ -63,8 +63,7 @@ describe Sinatra::Application do
       end
 
       it 'sets _li=1 in cookies' do
-        expect(last_response['set-cookie'].split("\n"))
-          .to include('_li=1; domain=example.org; path=/')
+        expect(rack_mock_session.cookie_jar['_li']).to eq('1')
       end
     end
   end
