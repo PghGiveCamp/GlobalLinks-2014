@@ -38,3 +38,15 @@ for serving the sinatra app.  The sinatra app is served via the
 ; or, on windows:
 server
 ```
+
+#### client
+
+For client development, `npm install` once to get all dev
+dependencies, then `npm start` to run the server. It will
+print a banner with current host name and port. While running,
+any changes to files in `src/client/` will be compiled
+immediately.
+
+When ready to release a static client built, run
+`grunt writeClient` (might need to have grunt-cli installed
+globally). This will write a half-dozen static assets to `www/`.
