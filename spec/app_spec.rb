@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'globallinks'
 
 describe Sinatra::Application do
