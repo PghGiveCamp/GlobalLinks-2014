@@ -142,7 +142,7 @@ end
 post '/logout' do
   session.clear
   cookies.clear
-  status 201
+  status 204
 end
 
 post '/contact/checkin' do

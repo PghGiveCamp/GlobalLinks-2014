@@ -139,6 +139,13 @@ describe Sinatra::Application do
     end
   end
 
+  describe 'POST /logout' do
+    it 'returns 204 No Content' do
+      post '/logout'
+      expect(last_response.status).to eq(204)
+    end
+  end
+
   describe 'POST /contact/checkout' do
     before do
       volunteer.update(checked_in: true)
