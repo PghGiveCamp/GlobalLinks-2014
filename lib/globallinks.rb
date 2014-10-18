@@ -158,3 +158,14 @@ post '/checkin' do
   current_user.volunteer.update(checked_in: true, last_checkin: Time.now)
   status 200
 end
+
+post '/checkout' do
+  halt 401 unless signed_in?
+  halt 409 unless current_user.volunteer.checked_in
+
+  hours = current_user.volunteer.volunteer_hours || 0
+  hours += (Time.now - current_user.volunteer.last_checkin) / 3600
+  current_user.volunteer.update(checked_in: false,
+                                volunteer_hours: hours.round(2))
+  status 200
+end
