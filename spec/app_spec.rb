@@ -119,7 +119,7 @@ describe Sinatra::Application do
     end
 
     context 'when user is not logged in' do
-      it 'returns 403 Unauthorized' do
+      it 'returns 401 Unauthorized' do
         post '/checkin'
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq(401)
