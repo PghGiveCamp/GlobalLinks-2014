@@ -1,1 +1,1 @@
-bundle exec rerun rackup config.ru
+bundle exec rackup config.ru
