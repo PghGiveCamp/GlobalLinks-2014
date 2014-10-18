@@ -13,7 +13,7 @@ html(lang='en', ng-app='globallinks')
 
     script(src="/vendors.js")
 
-  body
+  body(ng-controller='mainCtrl')
     .container
       nav.navbar.navbar-default(role="navigation")
         .container-fluid
@@ -31,11 +31,26 @@ html(lang='en', ng-app='globallinks')
           .navbar-collapse.collapse
             ul.nav.navbar-nav
               li
-                a(ui-sref='auth.login') Login
+                a(
+                  ng-if="auth.isLoggedIn()"
+                  ui-sref='contact'
+                ) Profile
               li
-                a(ui-sref='contact') Details
+                a(
+                  ng-if="auth.isLoggedIn()"
+                  ui-sref='checkin'
+                ) Check-in
+            ul.nav.navbar-nav.navbar-right
               li
-                a(ui-sref='checkin') Checkin
+                a(
+                  ng-if="!auth.isLoggedIn()"
+                  ui-sref='auth.login'
+                ) Login
+                a(
+                  ng-if="auth.isLoggedIn()"
+                  ui-sref='auth.login'
+                  ng-click='auth.logout()'
+                ) Logout
 
       ui-view.slide-left-right(name="main")
 

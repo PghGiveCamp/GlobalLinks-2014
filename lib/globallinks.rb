@@ -25,12 +25,6 @@ configure do
   end
 end
 
-helpers do
-  def hasher
-    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV.fetch('SALT'))
-  end
-end
-
 migration 'create users table' do
   database.create_table :users do
     primary_key :id
@@ -77,9 +71,30 @@ migration 'create volunteer table' do
 end
 
 class User < Sequel::Model
+  def volunteer
+    @volunteer ||= Volunteer.find(id: volunteer_id)
+  end
 end
 
 class Volunteer < Sequel::Model
+end
+
+helpers do
+  def current_user
+    @current_user ||= fetch_user(session[:username])
+  end
+
+  def signed_in?
+    !current_user.nil?
+  end
+
+  def hasher
+    @hasher ||= GlobalLinks::PasswordHasher.new(salt: ENV.fetch('SALT'))
+  end
+
+  def fetch_user(username)
+    User.find(username: username)
+  end
 end
 
 get '/' do
@@ -109,7 +124,7 @@ end
 post '/login' do
   halt 400 unless params[:username]
 
-  user = database[:users].filter(username: params[:username]).first
+  user = fetch_user(params[:username])
   halt 404 if user.nil?
   halt 401 if user[:password] != hasher.hash_password(params[:password])
 
@@ -126,4 +141,12 @@ post '/logout' do
   cookies.clear
   status 201
   json yes: :good
+end
+
+post '/checkin' do
+  halt 401 unless signed_in?
+  halt 409 if current_user.volunteer.checked_in
+
+  current_user.volunteer.update(checked_in: true, last_checkin: Time.now)
+  status 200
 end

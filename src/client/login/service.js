@@ -1,6 +1,6 @@
 angular.module('globallinks.login.service', [
 ])
-.factory('LoginSvc', function($http, $q, $window, UserKey){
+.factory('LoginSvc', function($http, $q, $window, $state, UserKey){
   var user;
 
   var login = function login(user, pass){
