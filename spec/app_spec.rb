@@ -109,7 +109,9 @@ describe Sinatra::Application do
 
     context 'when logged in' do
       it 'returns the updated contact record' do
-        post '/contact', {first_name: 'John', last_name: 'Smith'}, 'rack.session' => rack_session
+        post '/contact',
+             { first_name: 'John', last_name: 'Smith' },
+             'rack.session' => rack_session
         expect(last_response).to be_ok
         volunteer = JSON.parse(last_response.body, symbolize_names: true)
         expect(volunteer[:first_name]).to eq('John')
