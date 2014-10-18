@@ -128,7 +128,7 @@ describe Sinatra::Application do
 
     context 'when user is logged in' do
       let :rack_session do
-        {username: created_user.username}
+        {username: created_user.username, user_id: created_user.id}
       end
 
       it 'returns 200 OK' do
@@ -173,7 +173,7 @@ describe Sinatra::Application do
 
     context 'when user is logged in' do
       let :rack_session do
-        {username: created_user.username}
+        {username: created_user.username, user_id: created_user.id}
       end
 
       it 'returns 200 OK' do
