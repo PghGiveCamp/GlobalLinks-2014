@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/PghGiveCamp/GlobalLinks-2014.git"
+    "url": "https://github.com/globallinks/volunteer-portal.git"
   },
   "author": "GlobalLinks & the GiveCamp 2014 Volunteers",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PghGiveCamp/GlobalLinks-2014/issues"
+    "url": "https://github.com/globallinks/volunteer-portal/issues"
   },
-  "homepage": "https://github.com/PghGiveCamp/GlobalLinks-2014",
+  "homepage": "https://github.com/globallinks/volunteer-portal",
   "dependencies": {
     "rupert": "^0.2.0",
     "rupert-config-angular-bootstrap": "^0.1.0",
