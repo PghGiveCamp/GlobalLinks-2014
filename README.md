@@ -10,7 +10,7 @@ GlobalLinks-2014
 You'll have to ensure there is a postgresql database available for
 local development.  The server will look for `DATABASE_URL` and
 fall back to a passwordless database named `globallinks`.  Take a
-look at [`./app.rb`](app.rb) for details.
+look at [`./lib/globallinks.rb`](lib/globallinks.rb) for details.
 
 ``` bash
 # e.g.:
