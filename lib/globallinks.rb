@@ -33,7 +33,7 @@ migration 'create users table' do
     String :volunteer_id, null: false
     String :password, null: false
     timestamp :created_at, null: false, default: Sequel::CURRENT_TIMESTAMP
-    timestamp :modifiet_at, null: false, default: Sequel::CURRENT_TIMESTAMP
+    timestamp :modified_at, null: false, default: Sequel::CURRENT_TIMESTAMP
 
     index :username
   end
