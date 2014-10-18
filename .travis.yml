@@ -1,4 +1,6 @@
 language: ruby
+services:
+- memcached
 env:
   global:
   - DATABASE_URL='postgres://postgres@localhost:5432/globallinks_travis'
