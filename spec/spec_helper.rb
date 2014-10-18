@@ -11,5 +11,16 @@ require 'globallinks/password_hasher'
 
 Volunteer.unrestrict_primary_key
 
+RSpec.configure do |c|
+  c.around(:each) do |example|
+    Sinatra::Application.database.transaction(
+      rollback: :always,
+      auto_savepoint: true
+    ) do
+      example.run
+    end
+  end
+end
+
 SimpleCov.start
 Coveralls.wear!

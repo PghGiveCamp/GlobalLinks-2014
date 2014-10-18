@@ -31,7 +31,11 @@ describe Sinatra::Application do
       end
     end
     if app.database[:volunteers].filter(id: '1').empty?
-      Volunteer.create(id: '1')
+      Volunteer.create(
+        id: '1',
+        first_name: 'Jane',
+        last_name: 'Doe'
+      )
     end
     @created_user
   end
@@ -86,6 +90,25 @@ describe Sinatra::Application do
 
       it 'sets _li=1 in cookies' do
         expect(rack_mock_session.cookie_jar['_li']).to eq('1')
+      end
+    end
+  end
+
+  describe 'GET /contact' do
+    context 'when not logged in' do
+      it 'returns 404' do
+        get '/contact'
+        expect(last_response.status).to eq(404)
+      end
+    end
+
+    context 'when logged in' do
+      it 'returns the contact record' do
+        get '/contact', {}, 'rack.session' => {user_id: created_user.id}
+        expect(last_response).to be_ok
+        volunteer = JSON.parse(last_response.body, symbolize_names: true)
+        expect(volunteer[:first_name]).to eq('Jane')
+        expect(volunteer[:last_name]).to eq('Doe')
       end
     end
   end
