@@ -27,7 +27,41 @@ migration 'create users table' do
   end
 end
 
+migration 'create volunteer table' do
+  database.create_table :volunteers do
+    String :id, null: false, primary_key: true
+    String :volunteer_status, null: true
+    String :salutation, null: true
+    String :first_name, null: true
+    String :last_name, null: true
+    String :address, null: true
+    String :city, null: true
+    String :state, null: true
+    String :zip, null: true
+    String :country, null: true
+    DateTime :last_checkin, null: true
+    TrueClass :checked_in, null: true
+    String :username, null: true
+    String :home_phone, null: true
+    String :mobile_phone, null: true
+    String :work_phone, null: true
+    String :preferred_email_type, null: true
+    String :preferred_email, null: true
+    String :home_email, null: true
+    String :alternate_email, null: true
+    String :work_email, null: true
+    BigDecimal :volunteer_hours, null: true
+    String :emergency_name, null: true
+    String :emergency_phone, null: true
+    String :emergency_relationship, null: true
+    String :emergency_phone_type, null: true
+  end
+end
+
 class User < Sequel::Model
+end
+
+class Volunteer < Sequel::Model
 end
 
 get '/' do

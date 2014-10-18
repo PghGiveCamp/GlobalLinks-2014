@@ -27,6 +27,12 @@ export DATABASE_URL='postgres://globallinks:globallinks@localhost:5432/globallin
 
 # e.g.:
 createdb globallinks
+
+# To load volunteer data from the CSV file
+./server
+^C
+psql globallinks < load_volunteers.sql
+
 ```
 
 ### server
