@@ -115,7 +115,6 @@ DEPENDENCIES
   dalli
   dotenv
   execjs
-  multi_json
   pg
   pry
   rack-test
