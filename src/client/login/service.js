@@ -1,6 +1,6 @@
 angular.module('globallinks.login.service', [
 ])
-.factory('LoginSvc', function($http, $q, $window){
+.factory('LoginSvc', function($http, $q, $window, UserKey){
   var user;
 
   var login = function login(user, pass){
@@ -13,7 +13,7 @@ angular.module('globallinks.login.service', [
       user = {
         name: data.username
       };
-      $window.sessionStorage['username'] = JSON.stringify(user);
+      $window.sessionStorage[UserKey] = JSON.stringify(user);
       deferred.resolve(user);
     }, function(error) {
       deferred.reject(error);
@@ -22,8 +22,19 @@ angular.module('globallinks.login.service', [
     return deferred.promise;
   };
 
-  return {
-    login: login
+  var logout = function logout(){
+    $http.post('/logout');
+    delete $window.sessionStorage[UserKey];
   };
-})
+
+  var isLoggedIn = function(){
+    return !angular.isUndefined($window.sessionStorage[UserKey]);
+  };
+
+  return {
+    login: login,
+    logout: logout,
+    isLoggedIn: isLoggedIn
+  };
+}).value('UserKey', 'user')
 ;
