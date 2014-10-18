@@ -151,7 +151,7 @@ post '/logout' do
   json yes: :good
 end
 
-post '/checkin' do
+post '/contact/checkin' do
   halt 401 unless signed_in?
   halt 409 if current_user.volunteer.checked_in
 
@@ -159,7 +159,7 @@ post '/checkin' do
   status 200
 end
 
-post '/checkout' do
+post '/contact/checkout' do
   halt 401 unless signed_in?
   halt 409 unless current_user.volunteer.checked_in
 

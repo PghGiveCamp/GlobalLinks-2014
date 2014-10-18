@@ -113,14 +113,14 @@ describe Sinatra::Application do
     end
   end
 
-  describe 'POST /checkin' do
+  describe 'POST /contact/checkin' do
     before do
       Volunteer.find(id: '1').update(checked_in: false)
     end
 
     context 'when user is not logged in' do
       it 'returns 401 Unauthorized' do
-        post '/checkin'
+        post '/contact/checkin'
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq(401)
       end
@@ -132,14 +132,14 @@ describe Sinatra::Application do
       end
 
       it 'returns 200 OK' do
-        post '/checkin', nil, 'rack.session' => rack_session
+        post '/contact/checkin', nil, 'rack.session' => rack_session
         expect(last_response).to be_ok
       end
 
       it 'updates the volunteer\'s checkin property' do
         volunteer = Volunteer.find(id: '1')
         volunteer.update(checked_in: false)
-        post '/checkin', nil, 'rack.session' => rack_session
+        post '/contact/checkin', nil, 'rack.session' => rack_session
         volunteer.refresh
         expect(volunteer.checked_in).to be_truthy
         expect(volunteer.last_checkin).to_not be_nil
@@ -151,21 +151,21 @@ describe Sinatra::Application do
         end
 
         it 'returns 409 Conflict' do
-          post '/checkin', nil, 'rack.session' => rack_session
+          post '/contact/checkin', nil, 'rack.session' => rack_session
           expect(last_response.status).to eq(409)
         end
       end
     end
   end
 
-  describe 'POST /checkout' do
+  describe 'POST /contact/checkout' do
     before do
       Volunteer.find(id: '1').update(checked_in: true)
     end
 
     context 'when user is not logged in' do
       it 'returns 401 Unauthorized' do
-        post '/checkout'
+        post '/contact/checkout'
         expect(last_response).to_not be_ok
         expect(last_response.status).to eq(401)
       end
@@ -186,19 +186,19 @@ describe Sinatra::Application do
         end
 
         it 'returns 200 OK' do
-          post '/checkout', nil, 'rack.session' => rack_session
+          post '/contact/checkout', nil, 'rack.session' => rack_session
           expect(last_response).to be_ok
         end
 
         it 'updates the volunteer\'s checkout property' do
-          post '/checkout', nil, 'rack.session' => rack_session
+          post '/contact/checkout', nil, 'rack.session' => rack_session
           volunteer.refresh
           expect(volunteer.checked_in).to be_falsey
         end
 
         it 'updates the volunteer\'s hours' do
           volunteer.update(volunteer_hours: 100)
-          post '/checkout', nil, 'rack.session' => rack_session
+          post '/contact/checkout', nil, 'rack.session' => rack_session
           volunteer.refresh
           expect(volunteer.volunteer_hours).to eq(101)
         end
@@ -210,7 +210,7 @@ describe Sinatra::Application do
         end
 
         it 'returns 409 Conflict' do
-          post '/checkout', nil, 'rack.session' => rack_session
+          post '/contact/checkout', nil, 'rack.session' => rack_session
           expect(last_response.status).to eq(409)
         end
       end
