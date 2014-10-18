@@ -1,3 +1,4 @@
+require 'json'
 require 'sinatra'
 require 'sinatra/json'
 require 'sinatra/sequel'
@@ -64,10 +65,14 @@ migration 'create volunteer table' do
   end
 end
 
+Sequel::Model.plugin :json_serializer
+
 class User < Sequel::Model
+  many_to_one :volunteer # actually 1:1
 end
 
 class Volunteer < Sequel::Model
+  one_to_one :user
 end
 
 get '/' do
@@ -87,6 +92,13 @@ post '/user' do
   User.create(params)
   status 201
   ''
+end
+
+get '/contact' do
+  user = User[id: session[:user_id]]
+  halt 404 unless user
+
+  json User[id: session[:user_id]].volunteer
 end
 
 get '/scare' do
