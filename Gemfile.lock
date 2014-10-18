@@ -15,6 +15,7 @@ GEM
       dotenv-deployment (~> 0.0.2)
     dotenv-deployment (0.0.2)
     eventmachine (1.0.3)
+    execjs (2.2.2)
     ffi (1.9.6)
     hitimes (1.2.2)
     listen (2.7.11)
@@ -97,8 +98,7 @@ PLATFORMS
 
 DEPENDENCIES
   dotenv
-  eventmachine
-  ffi
+  execjs
   pg
   pry
   rake
@@ -110,4 +110,3 @@ DEPENDENCIES
   sinatra-contrib
   sinatra-sequel
   thin
-  win32console

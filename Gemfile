@@ -2,22 +2,20 @@ source 'https://rubygems.org'
 
 ruby File.read('.ruby-version').strip if ENV.key?('DYNO')
 
-gem 'eventmachine', platforms: [:ruby, :mswin, :mingw]
-gem 'ffi', platforms: [:ruby, :mswin, :mingw]
-gem 'pg', platforms: [:ruby, :mswin, :mingw]
+gem 'execjs'  # to trigger node install on heroku
+gem 'pg'
 gem 'rake'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sinatra-sequel'
 gem 'thin'
-gem 'win32console', platforms: [:mswin, :mingw]
 
 group :development, :test do
   gem 'dotenv'
 end
 
 group :test do
-  gem 'pry', platforms: [:ruby, :mswin, :mingw]
+  gem 'pry'
   gem 'rerun'
   gem 'rspec'
   gem 'rubocop'

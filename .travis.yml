@@ -4,6 +4,7 @@ env:
   - DATABASE_URL='postgres://postgres@localhost:5432/globallinks_travis'
 before_script:
 - nvm use 0.10
+- bundle exec rake setup
 - createdb globallinks_travis
 script:
 - bundle exec rake
