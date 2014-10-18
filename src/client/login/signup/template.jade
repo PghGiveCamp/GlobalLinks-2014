@@ -2,9 +2,11 @@ div.signup-form
 	h2.title New Volunteer Account
 	form(role="form")
 		.form-group
-			input(type="text", for='username', placeholder="Email Address")#username.form-control
+			input(type="text", name="email", placeholder="Email Address", ng-model="email").form-control
 		.form-group
-			input(type="password", for='password', placeholder="Choose a password")#password.form-control
-			input(type="password", for='passwordConfirm', placeholder="Re-type password")#password.form-control
+			input(type="text", name="username", placeholder="Choose Username", ng-model="username").form-control
+		.form-group
+			input(type="password", placeholder="Choose a password", ng-model="password").form-control
+			input(type="password", placeholder="Re-type password", ng-model="confirmPassword").form-control
 		.col-md-12.actions-wrapper
-			button(type="submit").btn.btn-default.btn-block REGISTER
+			button(type="submit", ng-click="register()").btn.btn-default.btn-block REGISTER

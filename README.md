@@ -20,6 +20,20 @@ bundle install
 bundle exec rake setup
 ```
 
+### required configuration
+
+The following env vars are required for the application to work.
+There are some defaults available in
+[`.example.env`](./.example.env), which may be copied into `.env`
+for use within the vagrant box:
+
+``` bash
+cp -v .example.env .env
+```
+
+* `DATABASE_URL` - the postgresql database URL
+* `SALT` - the salt used for server-side password hashing
+
 ### database setup
 
 You'll have to ensure there is a postgresql database available for

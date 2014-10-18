@@ -38,3 +38,13 @@ module.exports = (app, config)->
       r.json { username: q.body.username }
     else
       r.status(401).send()
+  console.log 'Adding /user'
+  app.post '/user', (q, r)->
+    if q.body.email.indexOf('notfound') > -1
+      return r.status(404).send()
+    if q.body.username.indexOf('conflicting') > -1
+      return r.status(409).send()
+    if q.body.password isnt 'password'
+      return r.status(401).send()
+    else
+      return r.status(201).json( { username: q.body.username } )
