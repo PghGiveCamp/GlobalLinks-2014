@@ -1,6 +1,8 @@
 require 'sinatra'
 require 'sinatra/json'
 require 'sinatra/sequel'
+require 'dalli'
+require 'rack/session/dalli'
 
 if Sinatra::Base.development? || Sinatra::Base.test?
   require 'dotenv'
@@ -12,6 +14,10 @@ set :public_folder, -> { File.join(root, 'www') }
 enable :static
 
 set :database, ENV.fetch('DATABASE_URL')
+
+configure do
+  use Rack::Session::Dalli, cache: Dalli::Client.new
+end
 
 migration 'create users table' do
   database.create_table :users do
@@ -78,7 +84,7 @@ end
 
 post '/user' do
   # TODO: implementation for real
-  database[:users] << User.new(params)
+  User.create(params)
   status 201
   ''
 end
@@ -86,4 +92,22 @@ end
 get '/scare' do
   content_type 'text/plain'
   "boo\n"
+end
+
+post '/login' do
+  halt 400 unless params[:username]
+
+  user = database[:users].filter(username: params[:username]).first
+  halt 404 if user.nil?
+  halt 401 if user[:password] != params[:password]
+
+  session[:username] = params[:username]
+  status 201
+  json yes: :good, username: params[:username]
+end
+
+post '/logout' do
+  session.clear
+  status 201
+  json yes: :good
 end

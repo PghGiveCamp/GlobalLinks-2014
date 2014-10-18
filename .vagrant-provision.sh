@@ -14,6 +14,7 @@ apt-get install -yq \
   libreadline-dev \
   libssl-dev \
   postgresql-9.3 \
+  memcached \
   libsqlite3-dev \
   vim-nox
 

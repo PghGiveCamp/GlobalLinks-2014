@@ -15,6 +15,7 @@ GEM
       term-ansicolor
       thor
     daemons (1.1.9)
+    dalli (2.7.2)
     diff-lcs (1.2.5)
     docile (1.1.5)
     dotenv (1.0.2)
@@ -111,10 +112,13 @@ PLATFORMS
 
 DEPENDENCIES
   coveralls
+  dalli
   dotenv
   execjs
+  multi_json
   pg
   pry
+  rack-test
   rake
   rerun
   rspec
