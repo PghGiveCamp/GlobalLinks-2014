@@ -16,8 +16,9 @@ html(lang='en', ng-app='globallinks')
   body
     nav.navbar.navbar-default(role="navigation")
         .container-fluid
-            .navbar-header
-                a.navbar-brand(ui-sref="login") GlobalLinks Volunteer Portal
+            .container
+                .navbar-header
+                    a.navbar-brand(ui-sref="login") GlobalLinks Volunteer Portal
     .container
         ui-view.slide-left-right(name="main")
 
