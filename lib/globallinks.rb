@@ -131,3 +131,11 @@ post '/logout' do
   status 201
   json yes: :good
 end
+
+post '/checkin' do
+  halt 401 if !signed_in?
+  halt 409 if current_user.volunteer.checked_in
+
+  current_user.volunteer.update(checked_in: true, last_checkin: Time.now)
+  status 200
+end
