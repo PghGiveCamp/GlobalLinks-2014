@@ -14,3 +14,8 @@ for serving the sinatra app.  The sinatra app is served via the
 # run the thing locally
 ./server
 ```
+
+``` cmd
+; or, on windows:
+server.bat
+```
