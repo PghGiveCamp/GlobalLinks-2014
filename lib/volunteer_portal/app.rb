@@ -124,6 +124,12 @@ get '/contact' do
   json User[id: session[:user_id]].volunteer
 end
 
+post '/contact' do
+  halt 401 unless signed_in?
+
+  json current_user.volunteer.update(params)
+end
+
 get '/scare' do
   content_type 'text/plain'
   "boo\n"
