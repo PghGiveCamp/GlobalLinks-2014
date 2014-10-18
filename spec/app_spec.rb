@@ -82,9 +82,9 @@ describe Sinatra::Application do
 
   describe 'GET /contact' do
     context 'when not logged in' do
-      it 'returns 404' do
+      it 'returns 401' do
         get '/contact'
-        expect(last_response.status).to eq(404)
+        expect(last_response.status).to eq(401)
       end
     end
 
@@ -95,6 +95,27 @@ describe Sinatra::Application do
         volunteer = JSON.parse(last_response.body, symbolize_names: true)
         expect(volunteer[:first_name]).to eq('Jane')
         expect(volunteer[:last_name]).to eq('Doe')
+      end
+    end
+  end
+
+  describe 'POST /contact' do
+    context 'when not logged in' do
+      it 'returns 401' do
+        post '/contact'
+        expect(last_response.status).to eq(401)
+      end
+    end
+
+    context 'when logged in' do
+      it 'returns the updated contact record' do
+        post '/contact',
+             { first_name: 'John', last_name: 'Smith' },
+             'rack.session' => rack_session
+        expect(last_response).to be_ok
+        volunteer = JSON.parse(last_response.body, symbolize_names: true)
+        expect(volunteer[:first_name]).to eq('John')
+        expect(volunteer[:last_name]).to eq('Smith')
       end
     end
   end

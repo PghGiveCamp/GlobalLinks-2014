@@ -118,10 +118,15 @@ post '/user' do
 end
 
 get '/contact' do
-  user = User[id: session[:user_id]]
-  halt 404 unless user
+  halt 401 unless signed_in?
 
-  json User[id: session[:user_id]].volunteer
+  json current_user.volunteer
+end
+
+post '/contact' do
+  halt 401 unless signed_in?
+
+  json current_user.volunteer.update(params)
 end
 
 post '/login' do
