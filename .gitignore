@@ -19,3 +19,7 @@ node_modules/
 plugins/
 platform/
 www/
+
+# Moar ruby ignores
+.bundle
+vendor
