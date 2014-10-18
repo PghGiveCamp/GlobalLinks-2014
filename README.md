@@ -10,9 +10,12 @@ GlobalLinks-2014
 You'll have to ensure there is a postgresql database available for
 local development.  The server requires that `DATABASE_URL` is set.
 
+
 ``` bash
-# set the DATABASE_URL var, which you'll probably want to do
-# somewhere more permanent than in an interactive shell.
+# Set the DATABASE_URL var in your local environment file.
+echo DATABASE_URL='postgres://localhost:5432/globallinks' >> .env
+
+# Or, export the DATABASE_URL var to your current shell environment.
 export DATABASE_URL='postgres://localhost:5432/globallinks'
 
 # e.g.:

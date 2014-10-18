@@ -2,6 +2,11 @@ require 'sinatra'
 require 'sinatra/json'
 require 'sinatra/sequel'
 
+if Sinatra::Base.development? || Sinatra::Base.test?
+  require 'dotenv'
+  Dotenv.load
+end
+
 set :root, File.expand_path('../../', __FILE__)
 set :public_folder, -> { File.join(root, 'www') }
 enable :static

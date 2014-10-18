@@ -27,3 +27,6 @@ npm-debug.log
 # Moar ruby ignores
 .bundle
 vendor
+
+# Development environment settings
+.env

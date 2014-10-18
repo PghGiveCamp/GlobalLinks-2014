@@ -12,6 +12,10 @@ gem 'sinatra-sequel'
 gem 'thin'
 gem 'win32console', platforms: [:mswin, :mingw]
 
+group :development, :test do
+  gem 'dotenv'
+end
+
 group :test do
   gem 'pry', platforms: [:ruby, :mswin, :mingw]
   gem 'rerun'
