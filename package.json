@@ -19,7 +19,8 @@
   "homepage": "https://github.com/PghGiveCamp/GlobalLinks-2014",
   "dependencies": {
     "rupert": "^0.2.0",
-    "rupert-config-angular-bootstrap": "^0.1.0"
+    "rupert-config-angular-bootstrap": "^0.1.0",
+    "st": "^0.5.2"
   },
   "devDependencies": {
     "grunt": "^0.4.5",
