@@ -82,9 +82,9 @@ describe Sinatra::Application do
 
   describe 'GET /contact' do
     context 'when not logged in' do
-      it 'returns 404' do
+      it 'returns 401' do
         get '/contact'
-        expect(last_response.status).to eq(404)
+        expect(last_response.status).to eq(401)
       end
     end
 
