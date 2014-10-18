@@ -118,15 +118,15 @@ post '/user' do
 end
 
 get '/contact' do
-  user = User[id: session[:user_id]]
-  halt 404 unless user
+  halt 401 unless signed_in?
 
-  json User[id: session[:user_id]].volunteer
+  json current_user.volunteer
 end
 
-get '/scare' do
-  content_type 'text/plain'
-  "boo\n"
+post '/contact' do
+  halt 401 unless signed_in?
+
+  json current_user.volunteer.update(params)
 end
 
 post '/login' do
@@ -141,28 +141,27 @@ post '/login' do
   cookies[:_li] = '1'
 
   status 201
-  json yes: :good, username: params[:username]
+  json username: params[:username]
 end
 
 post '/logout' do
   halt 401 unless signed_in?
   session.clear
   cookies.clear
-  status 201
-  json yes: :good
+  status 204
 end
 
-post '/checkin' do
+post '/contact/checkin' do
   halt 401 unless signed_in?
-  halt 409 if current_user.volunteer.checked_in
+  halt 412 if current_user.volunteer.checked_in
 
   current_user.volunteer.update(checked_in: true, last_checkin: Time.now)
   status 200
 end
 
-post '/checkout' do
+post '/contact/checkout' do
   halt 401 unless signed_in?
-  halt 409 unless current_user.volunteer.checked_in
+  halt 412 unless current_user.volunteer.checked_in
 
   hours = current_user.volunteer.volunteer_hours || 0
   hours += (Time.now - current_user.volunteer.last_checkin) / 3600
