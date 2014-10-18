@@ -93,6 +93,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  eventmachine
+  ffi
   pg
   pry
   rake
@@ -104,3 +106,4 @@ DEPENDENCIES
   sinatra-contrib
   sinatra-sequel
   thin
+  win32console
