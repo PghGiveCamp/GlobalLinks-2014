@@ -136,14 +136,14 @@ post '/login' do
   cookies[:_li] = '1'
 
   status 201
-  json yes: :good, username: params[:username]
+  json username: params[:username]
 end
 
 post '/logout' do
   session.clear
   cookies.clear
   status 201
-  json yes: :good
+  json {}
 end
 
 post '/contact/checkin' do
