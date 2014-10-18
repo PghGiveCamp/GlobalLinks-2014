@@ -145,6 +145,7 @@ post '/login' do
 end
 
 post '/logout' do
+  halt 401 unless signed_in?
   session.clear
   cookies.clear
   status 201

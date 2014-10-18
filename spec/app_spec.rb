@@ -94,6 +94,40 @@ describe Sinatra::Application do
     end
   end
 
+  describe 'POST /logout' do
+    context 'when not signed in' do
+      before do
+        post '/logout', nil, {'rack.session' => {}}
+      end
+
+      it 'returns 401' do
+        expect(last_response.status).to eq(401)
+      end
+    end
+
+    context 'when signed in' do
+      let :rack_session do
+        {username: created_user.username}
+      end
+
+      before do
+        post '/logout', nil, {'rack.session' => rack_session}
+      end
+
+      it 'returns 201' do
+        expect(last_response.status).to eql(201)
+      end
+
+      it 'clears the session' do
+        expect(last_request.session).to be_empty
+      end
+
+      it 'clears the cookies' do
+        expect(rack_mock_session.cookie_jar.to_hash).to be_empty
+      end
+    end
+  end
+
   describe 'GET /contact' do
     context 'when not logged in' do
       it 'returns 404' do
