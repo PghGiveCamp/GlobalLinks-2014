@@ -31,14 +31,19 @@ class User < Sequel::Model
 end
 
 get '/' do
-  redirect to('/index.html')
+  send_file 'www/index.html', type: :html
 end
 
 get '/user/:id' do
   json user: database[:users].filter(id: params[:id]).first
 end
 
+put '/user/:id' do
+  status 501
+end
+
 post '/user' do
+  # TODO: implementation for real
   database[:users] << User.new(params)
   status 201
   ''
