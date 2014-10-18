@@ -78,6 +78,16 @@ class Volunteer < Sequel::Model
   one_to_one :user
 end
 
+helpers do
+  def current_user
+    @current_user ||= User.find(username: session[:username])
+  end
+
+  def signed_in?
+    !current_user.nil?
+  end
+end
+
 get '/' do
   send_file 'www/index.html', type: :html
 end
@@ -128,4 +138,12 @@ post '/logout' do
   session.clear
   status 201
   json yes: :good
+end
+
+post '/checkin' do
+  halt 401 if !signed_in?
+  halt 409 if current_user.volunteer.checked_in
+
+  current_user.volunteer.update(checked_in: true, last_checkin: Time.now)
+  status 200
 end
