@@ -11,9 +11,7 @@ def dburl
 end
 
 def dbname
-  @dbname ||= begin
-    dburl.path.sub(/^\//, '')
-  end
+  @dbname ||= dburl.path.sub(/^\//, '')
 end
 
 def dbuser
