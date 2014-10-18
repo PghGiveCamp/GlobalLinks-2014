@@ -143,7 +143,6 @@ post '/logout' do
   session.clear
   cookies.clear
   status 201
-  json {}
 end
 
 post '/contact/checkin' do
