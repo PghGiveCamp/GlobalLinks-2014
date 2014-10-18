@@ -25,6 +25,10 @@ end
 class User < Sequel::Model
 end
 
+get '/' do
+  redirect to('/index.html')
+end
+
 get '/user/:id' do
   json user: database[:users].filter(id: params[:id]).first
 end
