@@ -22,6 +22,7 @@ www/
 
 npm-debug.log
 *.orig
+.DS_Store
 
 # Moar ruby ignores
 .bundle
