@@ -17,5 +17,5 @@ for serving the sinatra app.  The sinatra app is served via the
 
 ``` cmd
 ; or, on windows:
-server.bat
+server
 ```
