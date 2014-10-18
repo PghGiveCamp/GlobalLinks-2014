@@ -48,7 +48,9 @@ describe Sinatra::Application do
         post '/login',
              username: created_user.username,
              password: created_user.password
-        $stderr.puts "last_request.session: #{last_request.session.inspect}"
+        last_request.session.each do |key, value|
+          last_request.session[key.to_sym] = value
+        end
       end
 
       it 'returns 201' do
@@ -56,11 +58,11 @@ describe Sinatra::Application do
       end
 
       it 'sets the username in session' do
-        expect(last_request.session['username']).to eq('known_user')
+        expect(last_request.session[:username]).to eq('known_user')
       end
 
       it 'sets the user_id in session' do
-        expect(last_request.session['user_id']).to eq(created_user.id)
+        expect(last_request.session[:user_id]).to eq(created_user.id)
       end
 
       it 'sets _li=1 in cookies' do
