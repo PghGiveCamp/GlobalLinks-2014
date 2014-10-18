@@ -1,43 +1,25 @@
 describe Sinatra::Application do
   include Rack::Test::Methods
 
-  before do
-    create_user! if
-      app.database[:users].filter(username: 'known_user').empty?
-  end
-
   def hasher
     @hasher ||= VolunteerPortal::PasswordHasher.new(salt: ENV['SALT'])
   end
 
-  def create_user!
-    created_user
+  let! :created_user do
+    User.create(
+      username: 'known_user',
+      password: hasher.hash_password(known_user_password),
+      email: 'known-user@example.org',
+      volunteer_id: '1'
+    )
   end
 
-  def created_user
-    @created_user ||= begin
-      found = User.find(username: 'known_user')
-      if found
-        found.password = hasher.hash_password(known_user_password)
-        found.save
-        found
-      else
-        User.create(
-          username: 'known_user',
-          password: hasher.hash_password(known_user_password),
-          email: 'known-user@example.org',
-          volunteer_id: '1'
-        )
-      end
-    end
-    if app.database[:volunteers].filter(id: '1').empty?
-      Volunteer.create(
-        id: '1',
-        first_name: 'Jane',
-        last_name: 'Doe'
-      )
-    end
-    @created_user
+  let! :volunteer do
+    Volunteer.create(
+      id: '1',
+      first_name: 'Jane',
+      last_name: 'Doe'
+    )
   end
 
   def known_user_password
@@ -115,7 +97,7 @@ describe Sinatra::Application do
 
   describe 'POST /contact/checkin' do
     before do
-      Volunteer.find(id: '1').update(checked_in: false)
+      volunteer.update(checked_in: false)
     end
 
     context 'when user is not logged in' do
@@ -137,7 +119,6 @@ describe Sinatra::Application do
       end
 
       it 'updates the volunteer\'s checkin property' do
-        volunteer = Volunteer.find(id: '1')
         volunteer.update(checked_in: false)
         post '/contact/checkin', nil, 'rack.session' => rack_session
         volunteer.refresh
@@ -147,7 +128,7 @@ describe Sinatra::Application do
 
       context 'when volunteer is already checked in' do
         before do
-          Volunteer.find(id: '1').update(checked_in: true)
+          volunteer.update(checked_in: true)
         end
 
         it 'returns 409 Conflict' do
@@ -160,7 +141,7 @@ describe Sinatra::Application do
 
   describe 'POST /contact/checkout' do
     before do
-      Volunteer.find(id: '1').update(checked_in: true)
+      volunteer.update(checked_in: true)
     end
 
     context 'when user is not logged in' do
@@ -174,10 +155,6 @@ describe Sinatra::Application do
     context 'when user is logged in' do
       let :rack_session do
         { username: created_user.username, user_id: created_user.id }
-      end
-
-      let :volunteer do
-        Volunteer.find(id: '1')
       end
 
       context 'when user is checked in' do
