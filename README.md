@@ -2,6 +2,7 @@ GlobalLinks-2014
 ================
 
 [![Build Status](https://travis-ci.org/globallinks/volunteer-portal.svg?branch=master)](https://travis-ci.org/globallinks/volunteer-portal)
+[![Coverage Status](https://coveralls.io/repos/globallinks/volunteer-portal/badge.png)](https://coveralls.io/r/globallinks/volunteer-portal)
 
 ## local development
 
