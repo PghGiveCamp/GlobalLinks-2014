@@ -5,9 +5,7 @@ require 'sinatra/sequel'
 set :public_folder, -> { File.join(root, 'www') }
 enable :static
 
-unless ENV.key?('DATABASE_URL')
-  set :database, 'postgres://localhost:5432/globallinks'
-end
+set :database, ENV['DATABASE_URL'] || 'postgres://localhost:5432/globallinks'
 
 # FIXME: Yup this is hosed wat
 # migration 'create the users table' do
