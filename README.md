@@ -8,11 +8,13 @@ GlobalLinks-2014
 ### database setup
 
 You'll have to ensure there is a postgresql database available for
-local development.  The server will look for `DATABASE_URL` and
-fall back to a passwordless database named `globallinks`.  Take a
-look at [`./lib/globallinks.rb`](lib/globallinks.rb) for details.
+local development.  The server requires that `DATABASE_URL` is set.
 
 ``` bash
+# set the DATABASE_URL var, which you'll probably want to do
+# somewhere more permanent than in an interactive shell.
+export DATABASE_URL='postgres://localhost:5432/globallinks'
+
 # e.g.:
 createdb globallinks
 ```

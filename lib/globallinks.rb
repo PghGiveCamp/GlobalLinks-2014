@@ -2,25 +2,25 @@ require 'sinatra'
 require 'sinatra/json'
 require 'sinatra/sequel'
 
+set :root, File.expand_path('../../', __FILE__)
 set :public_folder, -> { File.join(root, 'www') }
 enable :static
 
-set :database, ENV['DATABASE_URL'] || 'postgres://localhost:5432/globallinks'
+set :database, ENV.fetch('DATABASE_URL')
 
-# FIXME: Yup this is hosed wat
-# migration 'create the users table' do
-#   database.create_table :users do
-#     primary_key :id
-#     String :username, null: false
-#     String :email, null: false
-#     String :volunteer_id, null: false
-#     String :password, null: false
-#     timestamp :created_at, null: false, default: 'current_timestamp'
-#     timestamp :modifiet_at, null: false, default: 'current_timestamp'
-#
-#     index :username
-#   end
-# end
+migration 'create users table' do
+  database.create_table :users do
+    primary_key :id
+    String :username, null: false
+    String :email, null: false
+    String :volunteer_id, null: false
+    String :password, null: false
+    timestamp :created_at, null: false, default: Sequel::CURRENT_TIMESTAMP
+    timestamp :modifiet_at, null: false, default: Sequel::CURRENT_TIMESTAMP
+
+    index :username
+  end
+end
 
 class User < Sequel::Model
 end
