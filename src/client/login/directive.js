@@ -54,7 +54,24 @@ angular.module('globallinks.login.directive', [
 		url: '/signup',
 		views: {
  			'login': {
-				templateUrl: 'login/signup'
+				templateUrl: 'login/signup',
+				controller: function($scope, $state, LoginSvc){
+					$scope.email = '';
+					$scope.username = '';
+					$scope.password = '';
+					$scope.error = null;
+					$scope.register = function(){
+						LoginSvc.register($scope.username, $scope.password, $scope.email)
+						.then(
+							function(user){
+								$state.go('checkin');
+							},
+							function(error){
+								$scope.error = error;
+							}
+						)
+					};
+				}
  			}
 		}
 	}

@@ -1,40 +1,45 @@
 angular.module('globallinks.login.service', [
 ])
-.factory('LoginSvc', function($http, $q, $window, $state, UserKey){
+.factory('LoginSvc', function($http, $window, UserKey){
   var user;
 
-  var login = function login(user, pass){
-    var deferred = $q.defer();
+  var finishLogin = function finishLogin(data){
+    user = {
+      name: data.username
+    };
+    $window.sessionStorage[UserKey] = JSON.stringify(user);
+    return user;
+  };
 
-    $http.post('/login', {
+  var login = function login(user, pass){
+    return $http.post('/login', {
       username: user,
       password: pass
-    }).success(function(data){
-      user = {
-        name: data.username
-      };
-      $window.sessionStorage[UserKey] = JSON.stringify(user);
-      deferred.resolve(user);
-    }, function(error) {
-      deferred.reject(error);
-    });
-
-    return deferred.promise;
+    }).success(finishLogin);
   };
 
   var logout = function logout(){
-    $http.post('/logout');
     delete $window.sessionStorage[UserKey];
+    return $http.post('/logout');
   };
 
-  var isLoggedIn = function(){
+  var isLoggedIn = function isLoggedIn(){
     return !angular.isUndefined($window.sessionStorage[UserKey]);
+  };
+
+  var register = function register(username, password, email){
+    return $http.post('/user', {
+      username: username,
+      password: password,
+      email: email
+    }).success(finishLogin);
   };
 
   return {
     login: login,
     logout: logout,
-    isLoggedIn: isLoggedIn
+    isLoggedIn: isLoggedIn,
+    register: register
   };
 }).value('UserKey', 'user')
 ;
