@@ -359,6 +359,12 @@ describe Sinatra::Application do
                         email: 'user@user.com'
           expect(last_response.status).to eq(201)
         end
+
+        it 'logs the user in' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_request.session[:user_id]).to_not be_nil
+        end
       end
 
       context 'when volunteer\'s username matches' do
@@ -373,6 +379,12 @@ describe Sinatra::Application do
           post '/user', username: 'user',
                         email: 'user@user.com'
           expect(last_response.status).to eq(201)
+        end
+
+        it 'logs the user in' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_request.session[:user_id]).to_not be_nil
         end
       end
 
@@ -419,6 +431,11 @@ describe Sinatra::Application do
           user = User.find(username: 'user')
           expect(user).to_not be_nil
           expect(user.volunteer_id).to eq('42')
+        end
+        it 'logs the user in' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_request.session[:user_id]).to_not be_nil
         end
       end
 
