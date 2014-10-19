@@ -57,8 +57,8 @@ describe Sinatra::Application do
     context 'when known username is supplied' do
       before :each do
         post '/login',
-          username: created_user.username,
-          password: known_user_password
+             username: created_user.username,
+             password: known_user_password
         last_request.session.each do |key, value|
           last_request.session[key.to_sym] = value
         end
@@ -142,8 +142,8 @@ describe Sinatra::Application do
     context 'when logged in' do
       it 'returns the updated contact record' do
         post '/contact',
-          { city: 'Houston' },
-          'rack.session' => rack_session
+             { city: 'Houston' },
+             'rack.session' => rack_session
         expect(last_response).to be_ok
         puts last_response.body
         volunteer = JSON.parse(last_response.body, symbolize_names: true)
@@ -246,13 +246,15 @@ describe Sinatra::Application do
   describe 'POST /reset_password_request' do
     context 'when input matches email' do
       it 'returns success' do
-        post '/reset_password_request', { user_identifier: created_user.volunteer.preferred_email }
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.preferred_email
         expect(last_response.status).to eq(201)
       end
 
       it 'creates reset token' do
         created_user.update(reset_token: nil)
-        post '/reset_password_request', { user_identifier: created_user.volunteer.preferred_email }
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.preferred_email
         created_user.refresh
         expect(created_user.reset_token).to_not be_nil
       end
@@ -263,13 +265,15 @@ describe Sinatra::Application do
 
     context 'when input matches username' do
       it 'returns success' do
-        post '/reset_password_request', { user_identifier: created_user.volunteer.username }
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.username
         expect(last_response.status).to eq(201)
       end
 
       it 'creates reset token' do
         created_user.update(reset_token: nil)
-        post '/reset_password_request', { user_identifier: created_user.volunteer.username }
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.username
         created_user.refresh
         expect(created_user.reset_token).to_not be_nil
       end
@@ -280,7 +284,8 @@ describe Sinatra::Application do
 
     context 'when input does not match' do
       it 'returns 404' do
-        post '/reset_password_request', { user_identifier: 'foobar' }
+        post '/reset_password_request',
+             user_identifier: 'foobar'
         expect(last_response.status).to eq(404)
       end
 

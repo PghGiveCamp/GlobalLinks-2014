@@ -70,12 +70,12 @@ migration 'create volunteer table' do
     String :emergency_phone_type, null: true
   end
 end
-exposed_volunteer_fields = [ :address, :city, :state, :zip, :country,
-                             :home_phone, :mobile_phone, :work_phone,
-                             :home_email, :alternate_email, :work_email,
-                             :emergency_name, :emergency_phone,
-                             :emergency_relationship, :emergency_phone_type,
-                             :checked_in, :volunteer_hours, :last_checkin ]
+exposed_volunteer_fields = [:address, :city, :state, :zip, :country,
+                            :home_phone, :mobile_phone, :work_phone,
+                            :home_email, :alternate_email, :work_email,
+                            :emergency_name, :emergency_phone,
+                            :emergency_relationship, :emergency_phone_type,
+                            :checked_in, :volunteer_hours, :last_checkin]
 
 Sequel::Model.plugin :json_serializer
 
@@ -188,7 +188,7 @@ post '/reset_password_request' do
   token = SecureRandom.uuid
   volunteer.user.update(reset_token: token)
 
-  # TODO send e-mail
+  # TODO: send e-mail
 
   status 201
 end
