@@ -22,6 +22,7 @@ deploy:
   provider: heroku
   api_key:
     secure: DbjhntwnhcOmOlhevPXvha5+g25kYwHt27Xe7KkpqQSbR8FRK524A0l8pdJQsIsm2Cumr2RFWfX3L5tqqPQqq17s09/tN5PREQs9IjYHfec/2YWtkYyvGT75m2mGO3TUcPscT6FTyXwjwuYx6Oc9BDnjcMS0BaoXl0fN3k0epeQ=
-  app: globallinks-vp-staging
+  app:
+    master: globallinks-vp-staging
   on:
     repo: globallinks/volunteer-portal
