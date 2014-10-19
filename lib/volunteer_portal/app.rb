@@ -58,6 +58,7 @@ migration 'create users table' do
     String :volunteer_id, null: false
     String :password, null: false
     String :reset_token,  fixed: true, size: 36
+    DateTime :last_stale_email_at, null: true
     timestamp :created_at, null: false, default: Sequel::CURRENT_TIMESTAMP
     timestamp :modified_at, null: false, default: Sequel::CURRENT_TIMESTAMP
 

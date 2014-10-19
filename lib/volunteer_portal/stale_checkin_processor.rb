@@ -14,6 +14,10 @@ module VolunteerPortal
       end
 
       volunteers.each do |volunteer|
+        next unless volunteer.user &&
+          (volunteer.user.last_stale_email_at.nil? ||
+           volunteer.user.last_stale_email_at < volunteer.last_checkin)
+
         Pony.mail(to: volunteer.preferred_email,
                   subject: 'Your shift is still open',
                   html_body: html_body(volunteer),
