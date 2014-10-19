@@ -145,7 +145,15 @@ helpers do
   end
 
   def send_password_reset(volunteer, token)
-    email_body = <<-HTML.gsub(/^ {4}/, '')
+    Pony.mail(
+      to: volunteer.preferred_email,
+      subject: 'Reset GlobalLinks Volunteer Portal Password',
+      html_body: password_reset_email_body(volunteer, token)
+    )
+  end
+
+  def password_reset_email_body(volunteer, token)
+    <<-HTML.gsub(/^ {4}/, '')
       <p>Hello #{volunteer.full_name},</p>
       <p>Click the link below to set your password.</p>
       <p>
@@ -154,11 +162,6 @@ helpers do
         </a>
       </p>
     HTML
-    Pony.mail(
-      to: volunteer.preferred_email,
-      subject: 'Reset GlobalLinks Volunteer Portal Password',
-      html_body: email_body
-    )
   end
 end
 

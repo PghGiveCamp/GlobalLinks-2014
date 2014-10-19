@@ -10,20 +10,34 @@ module Sampledata
   module_function :load_all
 
   class Loader
-    def load_users
-      unless db[:users].filter(email: 'amcoder@gmail.com').first
-        db[:users] << {
-          username: 'amcoder',
-          email: 'amcoder@gmail.com',
-          volunteer_id: db[:volunteers].filter(
-            preferred_email: 'amcoder@gmail.com'
-          ).first.fetch(:id),
-          password: hasher.hash_password('changeme')
-        }
+    USERS = {
+      'amcoder@gmail.com' => {
+        username: 'amcoder',
+        raw_password: 'changeme'
+      }
+    }
+
+    def load_users(users = USERS)
+      users.each do |email, user|
+        next if db[:users].filter(email: email).first
+        load_user(email, user)
       end
     end
 
     private
+
+    def load_user(email, user)
+      db[:users] << {
+        username: user[:username],
+        email: email,
+        volunteer_id: volunteer_id,
+        password: hasher.hash_password(user[:raw_password])
+      }
+    end
+
+    def volunteer_id(email)
+      db[:volunteers].filter(preferred_email: email).first.fetch(:id)
+    end
 
     def hasher
       @hasher ||= VolunteerPortal::PasswordHasher.new(salt: ENV.fetch('SALT'))
