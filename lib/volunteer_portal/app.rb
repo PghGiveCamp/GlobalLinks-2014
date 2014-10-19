@@ -89,7 +89,7 @@ end
 
 helpers do
   def current_user
-    @current_user ||= fetch_user(session[:username])
+    @current_user ||= User[id: session[:user_id]]
   end
 
   def signed_in?
@@ -98,10 +98,6 @@ helpers do
 
   def hasher
     @hasher ||= VolunteerPortal::PasswordHasher.new(salt: ENV.fetch('SALT'))
-  end
-
-  def fetch_user(username)
-    User.find(username: username)
   end
 end
 
@@ -155,11 +151,10 @@ end
 post '/login' do
   halt 400 unless params[:username]
 
-  user = fetch_user(params[:username])
+  user = User[username: params[:username]]
   halt 404 if user.nil?
   halt 401 if user[:password] != hasher.hash_password(params[:password])
 
-  session[:username] = params[:username]
   session[:user_id] = user[:id]
   cookies[:_li] = '1'
 

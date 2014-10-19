@@ -68,10 +68,6 @@ describe Sinatra::Application do
         expect(last_response.status).to eq(201)
       end
 
-      it 'sets the username in session' do
-        expect(last_request.session[:username]).to eq('known_user')
-      end
-
       it 'sets the user_id in session' do
         expect(last_request.session[:user_id]).to eq(created_user.id)
       end
