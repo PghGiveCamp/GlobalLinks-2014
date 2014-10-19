@@ -22,7 +22,9 @@ RSpec.configure do |c|
     end
   end
   c.before(:each) do
-    allow(Pony).to receive(:msg) {}
+    %i(msg deliver! mail).each do |m|
+      allow(Pony).to receive(m) {}
+    end
   end
 end
 
