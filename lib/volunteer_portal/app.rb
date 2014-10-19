@@ -12,7 +12,7 @@ if Sinatra::Base.development? || Sinatra::Base.test?
   Dotenv.load
 end
 
-set :root, File.expand_path('../../', __FILE__)
+set :root, File.expand_path('../../../', __FILE__)
 set :public_folder, -> { File.join(root, 'www') }
 set :cookie_options, httponly: false
 enable :static
