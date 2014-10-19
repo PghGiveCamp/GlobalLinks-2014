@@ -19,6 +19,8 @@ group :development, :test do
 end
 
 group :test do
+  gem 'faraday', require: false
+  gem 'faraday_middleware', require: false
   gem 'pry'
   gem 'rack-test'
   gem 'rerun'
