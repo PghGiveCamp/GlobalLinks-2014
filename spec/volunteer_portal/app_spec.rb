@@ -255,7 +255,12 @@ describe Sinatra::Application do
         expect(created_user.reset_token).to_not be_nil
       end
 
-      xit 'sends email' do
+      it 'sends email' do
+        expect(Pony).to receive(:mail).with(hash_including(
+          to: created_user.volunteer.preferred_email
+        ))
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.preferred_email
       end
     end
 
@@ -274,7 +279,12 @@ describe Sinatra::Application do
         expect(created_user.reset_token).to_not be_nil
       end
 
-      xit 'sends email' do
+      it 'sends email' do
+        expect(Pony).to receive(:mail).with(hash_including(
+          to: created_user.volunteer.preferred_email
+        ))
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.username
       end
     end
 
@@ -285,7 +295,10 @@ describe Sinatra::Application do
         expect(last_response.status).to eq(404)
       end
 
-      xit 'does not send email' do
+      it 'does not send email' do
+        expect(Pony).to_not receive(:mail)
+        post '/reset_password_request',
+             user_identifier: 'foobar'
       end
     end
   end
