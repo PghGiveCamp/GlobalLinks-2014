@@ -32,6 +32,7 @@ migration 'create users table' do
     String :email, null: false
     String :volunteer_id, null: false
     String :password, null: false
+    String :reset_token,  fixed: true, size: 36
     timestamp :created_at, null: false, default: Sequel::CURRENT_TIMESTAMP
     timestamp :modified_at, null: false, default: Sequel::CURRENT_TIMESTAMP
 
@@ -69,12 +70,12 @@ migration 'create volunteer table' do
     String :emergency_phone_type, null: true
   end
 end
-exposed_volunteer_fields = [ :address, :city, :state, :zip, :country,
-                             :home_phone, :mobile_phone, :work_phone,
-                             :home_email, :alternate_email, :work_email,
-                             :emergency_name, :emergency_phone,
-                             :emergency_relationship, :emergency_phone_type,
-                             :checked_in, :volunteer_hours, :last_checkin ]
+exposed_volunteer_fields = [:address, :city, :state, :zip, :country,
+                            :home_phone, :mobile_phone, :work_phone,
+                            :home_email, :alternate_email, :work_email,
+                            :emergency_name, :emergency_phone,
+                            :emergency_relationship, :emergency_phone_type,
+                            :checked_in, :volunteer_hours, :last_checkin]
 
 Sequel::Model.plugin :json_serializer
 
@@ -190,4 +191,20 @@ post '/contact/checkout' do
   current_user.volunteer.update(checked_in: false,
                                 volunteer_hours: hours.round(2))
   status 200
+end
+
+post '/reset_password_request' do
+  volunteer = Volunteer.where(
+    Sequel.expr(username: params[:user_identifier]) |
+    Sequel.expr(preferred_email: params[:user_identifier])
+  ).first
+
+  halt 404 unless volunteer
+
+  token = SecureRandom.uuid
+  volunteer.user.update(reset_token: token)
+
+  # TODO: send e-mail
+
+  status 201
 end

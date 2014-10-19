@@ -17,6 +17,7 @@ describe Sinatra::Application do
   let! :volunteer do
     Volunteer.create(
       id: '1',
+      username: 'known_user',
       first_name: 'Jane',
       last_name: 'Doe',
       preferred_email: 'jane@doe.com'
@@ -141,12 +142,12 @@ describe Sinatra::Application do
     context 'when logged in' do
       it 'returns the updated contact record' do
         post '/contact',
-             { first_name: 'John', last_name: 'Smith' },
+             { city: 'Houston' },
              'rack.session' => rack_session
         expect(last_response).to be_ok
+        puts last_response.body
         volunteer = JSON.parse(last_response.body, symbolize_names: true)
-        expect(volunteer[:first_name]).to eq('John')
-        expect(volunteer[:last_name]).to eq('Smith')
+        expect(volunteer[:city]).to eq('Houston')
       end
     end
   end
@@ -242,8 +243,58 @@ describe Sinatra::Application do
     end
   end
 
-  describe 'POST /user' do
+  describe 'POST /reset_password_request' do
+    context 'when input matches email' do
+      it 'returns success' do
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.preferred_email
+        expect(last_response.status).to eq(201)
+      end
 
+      it 'creates reset token' do
+        created_user.update(reset_token: nil)
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.preferred_email
+        created_user.refresh
+        expect(created_user.reset_token).to_not be_nil
+      end
+
+      xit 'sends email' do
+      end
+    end
+
+    context 'when input matches username' do
+      it 'returns success' do
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.username
+        expect(last_response.status).to eq(201)
+      end
+
+      it 'creates reset token' do
+        created_user.update(reset_token: nil)
+        post '/reset_password_request',
+             user_identifier: created_user.volunteer.username
+        created_user.refresh
+        expect(created_user.reset_token).to_not be_nil
+      end
+
+      xit 'sends email' do
+      end
+    end
+
+    context 'when input does not match' do
+      it 'returns 404' do
+        post '/reset_password_request',
+             user_identifier: 'foobar'
+        expect(last_response.status).to eq(404)
+      end
+
+      xit 'does not send email' do
+      end
+    end
+  end
+
+  describe 'POST /user' do
     let :volunteer do
       Volunteer.create(
         id: '42',
