@@ -3,11 +3,17 @@ angular.module('globallinks', [
 	'globallinks.contact',
 	'globallinks.checkin'
 ])
-.controller('mainCtrl', function($scope, LoginSvc, VolunteerQuotes, $location){
+.controller('mainCtrl', function($scope, LoginSvc, VolunteerQuotes, $location, $timeout){
 	$scope.auth = LoginSvc;
 	$scope.quotes = VolunteerQuotes;
+  $scope.quoteIndex = 0;
+  $timeout(function advanceSlide() {
+      $scope.quoteIndex = ($scope.quoteIndex + 1) % VolunteerQuotes.length;
+      $scope.selectedQuote = VolunteerQuotes[$scope.quoteIndex];
+      $timeout(advanceSlide, 10000);
+  });
   $scope.isActive = function (viewLocation) { 
-      return viewLocation === $location.path();
+    return viewLocation === $location.path();
   };
 })
 .value('VolunteerQuotes', [
@@ -45,23 +51,23 @@ angular.module('globallinks', [
   },
   { 
   	quote: "Global Links is so well organized that it makes the greatest possible use of volunteer time",
-  	name: "​Anonymous"
+  	name: "Anon."
   },
   { 
   	quote: "The best. I rarely do the others anymore because organization at the other place is not as nice as Global Links.  Everything is orderly and and straightforward so you feel like you have accomplished goals by the end of the volunteering...​", 
-  	name: "​​Anonymous"
+  	name: "Anon."
   },
   { 
   	quote: "Thanks for all you do to simultaneously reduce waste and save lives.  It's a beautiful thing.​", 
-  	name: "​​Anonymous"
+  	name: "Anon."
   },
   { 
   	quote: "I think you do an excellent job with organizing and keeping the volunteers buys and feeling useful.",
-  	name: "​​Anonymous"
+  	name: "Anon."
   },
   {
   	quote: "My volunteer experience has been exceptional.  Everything from the projects to the people has been great.",
-  	name: "​Anonymous"
+  	name: "Anon."
   }
 ])
 ;

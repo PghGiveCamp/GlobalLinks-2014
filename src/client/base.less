@@ -30,11 +30,12 @@
   float: none;
 }
 
-// page-specific styles
+// shared/common styles across pages
 // background
 body {
 	background: url("/assets/images/bkgd.gif") top center;
 }
+
 // header 
 #header {
 	padding-bottom: 1em;
@@ -47,19 +48,24 @@ body {
 		font-style: italic;
 		font-size: 0.8em;
 		color: @blue;
+		.quote, .author {
+			display: inline-block;
+			text-align: right;
+		}
 		.author {
 			padding-left: 1.5em;
 		}
 	}
 }
+
 // override bootstrap defaults: navbar
-.navbar {
+.navbar.navbar-inverse {
+	background-image: none;
 	border-radius: 0px;
 	li.active a {
-		background-color: @blue;
+		background-image: none;
 	}
 }
-
 
 // form wrappers
 .form-wrapper {
@@ -71,32 +77,20 @@ body {
 	padding-bottom: 10px;
 }
 
+h2.title {
+	padding-bottom: 0.25em;
+}
+
+hr {
+	border-color: lighten(@gray, 50%);
+}
 
 // animation for quotes
-.fade {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    opacity: 1;
-}
-.fade.ng-enter,
-.fade.ng-leave {
-    -webkit-transition: all 1s ease;
-    -moz-transition: all 1s ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease;
-}
-.fade.ng-enter {
-    opacity: 0;
-}
-.fade.ng-enter-active {
-    opacity: 1;
-}
-.fade.ng-leave {
-    opacity: 1;
-}
-.fade.ng-leave-active {
-    opacity: 0;
+.quote, .author {
+	-webkit-transition:all linear 5s;
+  transition:all linear 5s;
+  opacity: 1;
+  &.ng-add, &.ng-add-active {
+  	opacity: 0;
+  }
 }
