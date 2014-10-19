@@ -99,6 +99,11 @@ helpers do
   def hasher
     @hasher ||= VolunteerPortal::PasswordHasher.new(salt: ENV.fetch('SALT'))
   end
+
+  def login(user_id)
+    session[:user_id] = user_id
+    cookies[:_li] = '1'
+  end
 end
 
 get '/' do
@@ -129,10 +134,11 @@ post '/user' do
     halt 409, json(error_type: :MULTIPLE_MATCHES) unless volunteer
   end
 
-  User.create(username: username,
+  user = User.create(username: username,
               email: email,
               password: hasher.hash_password(params[:password]),
               volunteer_id: volunteer.id)
+  login(user.id)
   status 201
 end
 
@@ -155,8 +161,7 @@ post '/login' do
   halt 404 if user.nil?
   halt 401 if user[:password] != hasher.hash_password(params[:password])
 
-  session[:user_id] = user[:id]
-  cookies[:_li] = '1'
+  login(user[:id])
 
   status 201
   json username: params[:username]
