@@ -32,6 +32,7 @@ migration 'create users table' do
     String :email, null: false
     String :volunteer_id, null: false
     String :password, null: false
+    String :reset_token,  fixed: true, size: 36
     timestamp :created_at, null: false, default: Sequel::CURRENT_TIMESTAMP
     timestamp :modified_at, null: false, default: Sequel::CURRENT_TIMESTAMP
 
@@ -174,4 +175,20 @@ post '/contact/checkout' do
   current_user.volunteer.update(checked_in: false,
                                 volunteer_hours: hours.round(2))
   status 200
+end
+
+post '/reset_password_request' do
+  volunteer = Volunteer.where(
+    Sequel.expr(username: params[:user_identifier]) |
+    Sequel.expr(preferred_email: params[:user_identifier])
+  ).first
+
+  halt 404 unless volunteer
+
+  token = SecureRandom.uuid
+  volunteer.user.update(reset_token: token)
+
+  # TODO send e-mail
+
+  status 201
 end
