@@ -19,13 +19,10 @@ html(lang='en', ng-app='globallinks')
         .row
           .image-wrapper.col-md-4.vcenter
             img(src="/assets/images/gl-logo.png").logo
-          .quote-wrapper.col-md-6.col-md-offset-2.vcenter
-            span.col-md-9.vcenter.quote(
+          .quote-wrapper.col-md-6.col-md-offset-2.vcenter.hidden-xs 
+            span.vcenter.push-right.quote(
               ng-model='selectedQuote.quote'
-            ) "{{ selectedQuote.quote }}"
-            span.col-md-2.push-right.vcenter.author(
-              ng-model='selectedQuote.name'
-            ) ~{{ selectedQuote.name }}
+            ) "{{ selectedQuote.quote }}" &nbsp; &nbsp; ~{{ selectedQuote.name }}
     .container-full
       nav.navbar.navbar-default.navbar-inverse(role="navigation")
         .container

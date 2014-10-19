@@ -42,18 +42,18 @@ body {
 	background-color: white;
 	.logo {
 		width: 75%;
+		@media (max-width: @screen-sm-min) {
+			width: 100%;
+		}
 	}
 	.quote-wrapper {
 		text-align: right;
 		font-style: italic;
 		font-size: 0.8em;
 		color: @blue;
-		.quote, .author {
+		.quote {
 			display: inline-block;
 			text-align: right;
-		}
-		.author {
-			padding-left: 1.5em;
 		}
 	}
 }
