@@ -1,0 +1,5 @@
+span.vcenter.push-right.Quote(
+  ng-repeat="quote in quotes"
+  ng-show="$index == currentQuote"
+)
+  span.QuoteText "{{ quote.quote }}" &nbsp; &nbsp; ~{{ quote.name }}
