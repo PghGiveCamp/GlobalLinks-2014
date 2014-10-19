@@ -20,7 +20,9 @@ html(lang='en', ng-app='globallinks')
           .image-wrapper.col-md-4.vcenter
             img(src="/assets/images/gl-logo.png").logo
           .quote-wrapper.col-md-8.vcenter
-            span.quote global links is awesome, come volunteer for us
+            showQuotes(
+              text="fromController"
+            ) 
             span.author -anonymous
     .container-full
       nav.navbar.navbar-default.navbar-inverse(role="navigation")
@@ -54,7 +56,7 @@ html(lang='en', ng-app='globallinks')
                 ) Check-in
             ul.nav.navbar-nav.navbar-right
               li(
-                ng-class="{ active: isActive('/login')}"
+                ng-class="{ active: isActive('/auth/login')}"
               )
                 a(
                   ng-if="!auth.isLoggedIn()"
