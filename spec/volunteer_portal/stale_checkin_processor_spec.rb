@@ -1,7 +1,7 @@
 describe VolunteerPortal::StaleCheckinProcessor do
   subject { described_class.new(10) }
 
-  xit 'sends an email to stale checkins' do
+  it 'sends an email to stale checkins' do
     Volunteer.create(
       id: '1',
       first_name: 'Simon',
@@ -16,7 +16,7 @@ describe VolunteerPortal::StaleCheckinProcessor do
     subject.process_stale_checkins
   end
 
-  xit 'does not send an email for checkins less than the limit' do
+  it 'does not send an email for checkins less than the limit' do
     Volunteer.create(
       id: '1',
       preferred_email: 'stale@example.com',
@@ -28,7 +28,7 @@ describe VolunteerPortal::StaleCheckinProcessor do
     subject.process_stale_checkins
   end
 
-  xit 'does not send an email for volunteers not checked in' do
+  it 'does not send an email for volunteers not checked in' do
     Volunteer.create(
       id: '1',
       preferred_email: 'stale@example.com',
