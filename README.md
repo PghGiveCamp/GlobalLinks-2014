@@ -20,6 +20,13 @@ bundle install
 bundle exec rake setup
 ```
 
+If your local database gets into a funky state, it can be reset
+like so:
+
+``` bash
+bundle exec rake reset
+```
+
 ### required configuration
 
 The following env vars are required for the application to work.
