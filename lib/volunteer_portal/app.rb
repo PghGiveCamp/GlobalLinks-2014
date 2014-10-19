@@ -208,3 +208,16 @@ post '/reset_password_request' do
 
   status 201
 end
+
+post '/reset_password' do
+  user = User[reset_token: params[:reset_token]]
+
+  halt 404 unless user
+
+  user.update(
+    reset_token: nil,
+    password: hasher.hash_password(params[:password])
+  )
+
+  status 200
+end
