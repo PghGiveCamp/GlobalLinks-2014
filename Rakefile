@@ -5,7 +5,13 @@ rescue LoadError => e
   warn e
 end
 
-Dir.glob('lib/tasks/*.rb') { |rb| load rb }
+Dir.glob('lib/tasks/*.rb') do |rb|
+  begin
+    load rb
+  rescue LoadError => e
+    warn e
+  end
+end
 
 RSpec::Core::RakeTask.new if defined?(RSpec)
 
