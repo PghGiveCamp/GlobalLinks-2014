@@ -40,9 +40,10 @@ namespace :setup do
 
   task :load_sampledata do
     Dir.chdir(sampledata_dir) do
-      sh "psql '#{ENV['DATABASE_URL']}' < load.sql"
       require './load'
-      Sampledata.load_all
+      Sampledata.load_all.each do |line|
+        puts line
+      end
     end
   end
 end

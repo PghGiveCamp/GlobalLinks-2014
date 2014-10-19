@@ -1,42 +1,60 @@
 require 'sequel'
+require 'securerandom'
 require 'volunteer_portal/password_hasher'
 
 module Sampledata
   def load_all
     loader = Loader.new
-    loader.load_users
+    output = []
+    output << loader.load_volunteers
+    output << loader.load_users
+    output
   end
 
   module_function :load_all
 
   class Loader
-    USERS = {
-      'amcoder@gmail.com' => {
-        username: 'amcoder',
-        raw_password: 'changeme'
-      }
-    }
+    def load_volunteers(file = 'volunteers.csv')
+      %x{psql '#{db.url}' -a -c "\\copy volunteers FROM '#{file}' DELIMITER ',' CSV HEADER"}
+    end
 
-    def load_users(users = USERS)
+    def load_users(users = users)
+      output = []
       users.each do |email, user|
         next if db[:users].filter(email: email).first
         load_user(email, user)
+        output << "Added user for #{email}"
       end
+      output
     end
 
     private
 
     def load_user(email, user)
+      ensure_volunteer_exists!(email)
       db[:users] << {
-        username: user[:username],
+        username: user['username'],
         email: email,
         volunteer_id: volunteer_id(email),
-        password: hasher.hash_password(user[:raw_password])
+        password: hasher.hash_password(user['raw_password'])
       }
     end
 
     def volunteer_id(email)
-      db[:volunteers].filter(preferred_email: email).first.fetch(:id)
+      volunteer(email).fetch(:id)
+    end
+
+    def volunteer(email)
+      db[:volunteers].filter(preferred_email: email).first
+    end
+
+    def ensure_volunteer_exists!(email)
+      return if volunteer(email)
+      db[:volunteers] << {
+        id: SecureRandom.uuid,
+        preferred_email: email,
+        checked_in: false
+      }
     end
 
     def hasher
@@ -45,6 +63,10 @@ module Sampledata
 
     def db
       @db ||= Sequel.connect(ENV.fetch('DATABASE_URL'))
+    end
+
+    def users(users_file = 'users.json')
+      @users ||= JSON.parse(File.read(users_file))
     end
   end
 end
