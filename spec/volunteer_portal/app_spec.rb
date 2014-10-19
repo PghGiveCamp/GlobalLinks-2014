@@ -294,6 +294,43 @@ describe Sinatra::Application do
     end
   end
 
+  describe 'POST /reset_password' do
+    context 'when token is not found' do
+      it 'returns 404' do
+        post '/reset_password', reset_token: 'foobar', password: 'abcd'
+        expect(last_response.status).to eq(404)
+      end
+    end
+
+    context 'when token is found' do
+      let :token do
+        '2d931510-d99f-494a-8c67-87feb05e1594'
+      end
+
+      before do
+        created_user.update(reset_token: token)
+      end
+
+      it 'resets password' do
+        post '/reset_password', reset_token: token, password: 'abcd'
+        created_user.refresh
+        expect(created_user.password).to eq(hasher.hash_password('abcd'))
+      end
+
+      it 'clears token' do
+        post '/reset_password', reset_token: token, password: 'abcd'
+        created_user.refresh
+        expect(created_user.reset_token).to be_nil
+      end
+
+      it 'returns success' do
+        post '/reset_password', reset_token: token, password: 'abcd'
+        created_user.refresh
+        expect(last_response.status).to eq(200)
+      end
+    end
+  end
+
   describe 'POST /user' do
     let :volunteer do
       Volunteer.create(
