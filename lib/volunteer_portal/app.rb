@@ -117,10 +117,26 @@ put '/user/:id' do
 end
 
 post '/user' do
-  # TODO: implementation for real
-  User.create(params)
+  email = params[:email]
+  username = params[:username]
+  volunteers = Volunteer.where(preferred_email: email).to_a
+  halt 404 unless volunteers.any?
+  halt 409, json(error_type: :ACCOUNT_EXISTS) if User.find(username: username)
+
+  if volunteers.count == 1
+    volunteer = volunteers.first
+    halt 409, json(error_type: :WRONG_USERNAME) if volunteer.username &&
+                                            volunteer.username != username
+  else
+    volunteer = volunteers.find { |v| v.username == username }
+    halt 409, json(error_type: :MULTIPLE_MATCHES) unless volunteer
+  end
+
+  User.create(username: username,
+              email: email,
+              password: hasher.hash_password(params[:password]),
+              volunteer_id: volunteer.id)
   status 201
-  ''
 end
 
 get '/contact' do

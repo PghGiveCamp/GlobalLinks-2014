@@ -18,7 +18,8 @@ describe Sinatra::Application do
     Volunteer.create(
       id: '1',
       first_name: 'Jane',
-      last_name: 'Doe'
+      last_name: 'Doe',
+      preferred_email: 'jane@doe.com'
     )
   end
 
@@ -236,6 +237,112 @@ describe Sinatra::Application do
         it 'returns 412 Precondition failed' do
           post '/contact/checkout', nil, 'rack.session' => rack_session
           expect(last_response.status).to eq(412)
+        end
+      end
+    end
+  end
+
+  describe 'POST /user' do
+
+    let :volunteer do
+      Volunteer.create(
+        id: '42',
+        preferred_email: 'user@user.com'
+      )
+    end
+
+    context 'when email not found' do
+      it 'responds 404' do
+        post '/user', username: 'user',
+                      email: 'not@there.com'
+        expect(last_response.status).to eq(404)
+      end
+    end
+
+    context 'when account already exists' do
+      it 'responds 409' do
+        post '/user', username: 'known_user',
+                      email: 'user@user.com'
+        expect(last_response.status).to eq(409)
+      end
+    end
+
+    context 'when a single volunteer is found' do
+
+      context 'when volunteer does not have an username yet' do
+        it 'responds 201' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_response.status).to eq(201)
+        end
+      end
+
+      context 'when volunteer\'s username matches' do
+        let :volunteer do
+          Volunteer.create(
+            id: '42',
+            preferred_email: 'user@user.com',
+            username: 'user'
+          )
+        end
+        it 'responds 201' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_response.status).to eq(201)
+        end
+      end
+
+      context 'when volunteer\'s username does not match' do
+        let :volunteer do
+          Volunteer.create(
+            id: '42',
+            preferred_email: 'user@user.com',
+            username: 'nomatch'
+          )
+        end
+        it 'responds 409' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_response.status).to eq(409)
+        end
+      end
+    end
+
+    context 'when multiple volunteers are found' do
+      before do
+        Volunteer.create(
+          id: '43',
+          preferred_email: 'user@user.com'
+        )
+      end
+
+      context 'when volunteer\'s username matches one' do
+        let :volunteer do
+          Volunteer.create(
+            id: '42',
+            preferred_email: 'user@user.com',
+            username: 'user'
+          )
+        end
+        it 'responds 201' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_response.status).to eq(201)
+        end
+        it 'creates a user account' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          user = User.find(username: 'user')
+          expect(user).to_not be_nil
+          expect(user.volunteer_id).to eq('42')
+        end
+      end
+
+      context 'when volunteer\'s username does not match' do
+        it 'responds 409' do
+          post '/user', username: 'user',
+                        email: 'user@user.com'
+          expect(last_response.status).to eq(409)
         end
       end
     end
