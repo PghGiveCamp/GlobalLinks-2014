@@ -9,7 +9,8 @@ angular.module('globallinks.checkin', [
 angular.module('globallinks.contact', [
   'ui.router',
   'contact.template',
-  'globallinks.contact.service'
+  'globallinks.contact.service',
+  'globallinks.login.service'
 ])
 .config(function($stateProvider){
   $stateProvider.state({
@@ -19,6 +20,11 @@ angular.module('globallinks.contact', [
       'main': {
         templateUrl: 'contact',
         controller: 'ContactCtrl',
+      }
+    },
+    resolve: {
+      auth: function($q, LoginSvc){
+        return LoginSvc.isLoggedInQ();
       }
     }
   });
@@ -51,9 +57,77 @@ angular.module('globallinks', [
 	'globallinks.contact',
 	'globallinks.checkin'
 ])
-.controller('mainCtrl', function($scope, LoginSvc){
+.config(function($urlRouterProvider){
+	$urlRouterProvider.otherwise('/auth/login');
+})
+.controller('mainCtrl', function($scope, LoginSvc, VolunteerQuotes, $location, $timeout){
 	$scope.auth = LoginSvc;
-});
+	$scope.quotes = VolunteerQuotes;
+  $scope.quoteIndex = 0;
+  $timeout(function advanceSlide() {
+      $scope.quoteIndex = ($scope.quoteIndex + 1) % VolunteerQuotes.length;
+      $scope.selectedQuote = VolunteerQuotes[$scope.quoteIndex];
+      $timeout(advanceSlide, 10000);
+  });
+  $scope.isActive = function (viewLocation) { 
+    return viewLocation === $location.path();
+  };
+})
+.value('VolunteerQuotes', [
+  { 
+  	quote: "O​n behalf of GSK, we wish you great success. Know that we will continue our efforts to help support your wonderful organization.  Thanks to all of you for making us feel so welcome and sharing your mission.​", 
+  	name: "​Barb D."
+  },
+  { 
+  	quote: "It was truly a rewarding day for all of us.​", 
+  	name: "​Barb D."
+  },
+  { 
+  	quote: "O​n behalf of GSK, we wish you great success. Know that we will continue our efforts to help support your wonderful organization.  Thanks to all of you for making us feel so welcome and sharing your mission.​", 
+  	name: "​Barb D."
+  },
+  { 
+  	quote: "It was personally fulfilling to volunteer at Global Links seeing their work to help others do more, feel better, live longer.​", 
+  	name: "​Patti"
+  },
+  { 
+  	quote: "The experience was truly eye opening for all of us and we will definitely be looking to partner with you more in the future.  Your staff was friendly and very efficient at keeping us busy and leading our group.  We felt great on our way out the door, knowing that we had made a difference.​", 
+  	name: "Dara K."
+  },
+  { 
+  	quote: "I really enjoyed the time I spent there. I think what you do at Global Links is great and I really felt as though I made a difference when I volunteered there.​", 
+  	name: "​Jess B."
+  },
+  { 
+  	quote: "I really enjoy coming to Global Links. Such a wonderful and worthy cause.​", 
+  	name: "​Tammi V."
+  },
+  { 
+  	quote: "And thank YOU for always being so helpful and so much fun also! It really makes a difference for us volunteers and helps us to enjoy our time there.​", 
+  	name: "​Tammi V."
+  },
+  { 
+  	quote: "Global Links is so well organized that it makes the greatest possible use of volunteer time",
+  	name: "Anon."
+  },
+  { 
+  	quote: "The best. I rarely do the others anymore because organization at the other place is not as nice as Global Links.  Everything is orderly and and straightforward so you feel like you have accomplished goals by the end of the volunteering...​", 
+  	name: "Anon."
+  },
+  { 
+  	quote: "Thanks for all you do to simultaneously reduce waste and save lives.  It's a beautiful thing.​", 
+  	name: "Anon."
+  },
+  { 
+  	quote: "I think you do an excellent job with organizing and keeping the volunteers buys and feeling useful.",
+  	name: "Anon."
+  },
+  {
+  	quote: "My volunteer experience has been exceptional.  Everything from the projects to the people has been great.",
+  	name: "Anon."
+  }
+])
+;
 
 }).call(this);
 
@@ -82,14 +156,15 @@ angular.module('globallinks.contact.service', [
 (function(){
 angular.module('globallinks.login.service', [
 ])
-.factory('LoginSvc', function($http, $window, UserKey){
-  var user;
+.factory('LoginSvc', function($q, $http, $window, UserKey){
+
+  var user, storage = $window.localStorage;
 
   var finishLogin = function finishLogin(data){
     user = {
       name: data.username
     };
-    $window.sessionStorage[UserKey] = JSON.stringify(user);
+    storage[UserKey] = JSON.stringify(user);
     return user;
   };
 
@@ -101,12 +176,22 @@ angular.module('globallinks.login.service', [
   };
 
   var logout = function logout(){
-    delete $window.sessionStorage[UserKey];
+    delete storage[UserKey];
     return $http.post('/logout');
   };
 
   var isLoggedIn = function isLoggedIn(){
-    return !angular.isUndefined($window.sessionStorage[UserKey]);
+    return !angular.isUndefined(storage[UserKey]);
+  };
+
+  var isLoggedInQ = function isLoggedInQ(){
+    var d = $q.defer();
+    if(isLoggedIn()){
+      d.resolve(true);
+    } else {
+      d.reject();
+    }
+    return d.promise;
   };
 
   var register = function register(username, password, email){
@@ -121,6 +206,7 @@ angular.module('globallinks.login.service', [
     login: login,
     logout: logout,
     isLoggedIn: isLoggedIn,
+    isLoggedInQ: isLoggedInQ,
     register: register
   };
 }).value('UserKey', 'user')
@@ -201,6 +287,16 @@ angular.module('globallinks.login.directive', [
 							}
 						)
 					};
+				}
+			}
+		},
+		resolve: {
+			auth: function($q, $state, LoginSvc){
+				if(LoginSvc.isLoggedIn()){
+					$state.go('checkin');
+					return $q.reject('Redirecting...');
+				} else {
+					return true;
 				}
 			}
 		}
