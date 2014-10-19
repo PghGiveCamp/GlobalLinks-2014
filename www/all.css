@@ -6235,18 +6235,6 @@ h2.title {
 hr {
   border-color: #a1a8ad;
 }
-.quote,
-.author {
-  -webkit-transition: all linear 5s;
-  transition: all linear 5s;
-  opacity: 1;
-}
-.quote.ng-add,
-.author.ng-add,
-.quote.ng-add-active,
-.author.ng-add-active {
-  opacity: 0;
-}
 #checkin .instructions {
   padding-top: 1em;
   padding-bottom: 1em;
@@ -6265,6 +6253,7 @@ hr {
   padding-left: 1.5em;
 }
 .Contact .form-wrapper label {
+  padding-top: 0.5em;
   text-align: right;
 }
 .Contact .form-wrapper .waivers {
@@ -12512,18 +12501,6 @@ h2.title {
 hr {
   border-color: #a1a8ad;
 }
-.quote,
-.author {
-  -webkit-transition: all linear 5s;
-  transition: all linear 5s;
-  opacity: 1;
-}
-.quote.ng-add,
-.author.ng-add,
-.quote.ng-add-active,
-.author.ng-add-active {
-  opacity: 0;
-}
 #login .form-wrapper button {
   width: 100%;
   margin-bottom: 5px;
@@ -12541,4 +12518,12 @@ hr {
 }
 #login .actions-wrapper .reset-password {
   font-size: 0.95em;
+}
+
+.quote-wrapper {
+  max-height: 57px;
+  overflow: hidden;
+}
+.Quote {
+  overflow: hidden;
 }
