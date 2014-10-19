@@ -21,7 +21,6 @@ module Tasks
       require 'uri'
     end
 
-
     def build_users(collaborators)
       collaborators.each_with_object({}) do |user, h|
         email = conn.get(URI(user.fetch('url')).path).body['email']
