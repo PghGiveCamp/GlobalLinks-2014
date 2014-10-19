@@ -8,9 +8,9 @@ env:
   - SMTP_PORT=587
   - SMTP_TLS=true
   - SMTP_USERNAME=globallinks.heroku
-  - SMTP_PASSWORD=GiveCamp2014
   - SMTP_AUTH=plain
   - SMTP_DOMAIN=localhost.localdomain
+  # SMTP_PASSWORD is set in travis repository settings
 before_script:
 - nvm use 0.10
 - bundle exec rake setup
