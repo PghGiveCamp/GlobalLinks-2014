@@ -136,9 +136,13 @@ helpers do
 
   def send_password_reset(volunteer, token)
     email_body = <<HTML
-      Hello #{volunteer.full_name},
-      Click the link below to set your password.
-      <a href="#{request.host}/auth/resetpassword/#{token}">#{request.host}/auth/resetpassword/#{token}</a>
+      <p>Hello #{volunteer.full_name},</p>
+      <p>Click the link below to set your password.</p>
+      <p>
+        <a href="#{request.host}/auth/resetpassword/#{token}">
+          #{request.host}/auth/resetpassword/#{token}
+        </a>
+      </p>
 HTML
     Pony.mail(
       to: volunteer.preferred_email,
