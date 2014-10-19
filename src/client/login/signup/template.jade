@@ -10,3 +10,29 @@ div.signup-form
 			input(type="password", placeholder="Re-type password", ng-model="confirmPassword").form-control
 		.col-md-12.actions-wrapper
 			button(type="submit", ng-click="register()").btn.btn-default.btn-block REGISTER
+			p.text-warning.bg-warning.custom-msg(
+				ng-show="error"
+			)
+				span(
+					ng-switch-when=('No email - 404')
+				)
+					| This email address is not associated with a current GlobalLinks volunteer. Please
+					a(href="http://www.globallinks.org/get_involved/volunteer.php") sign up
+					| to be a Global Links volunteer
+				span(
+					ng-switch-when=('Email, username exist *anywhere*. 409 "ACCOUNT EXISTS"')
+				)
+					| That username is already in use by a GlobalLinks volunteer. Please choose a different username, and try again.
+				span(
+					ng-switch-when=('One volunteer with that email, but has a different username. 409, "WRONG USER NAME"')
+				)
+					| You have already been assigned a username by GlobalLinks staff. Please use that username, or <contact GlobalLinks> if you don't have it available.
+				span(
+					ng-switch-when=('Multiple volunteers with that email, and none have that username. 409 "MULTIPLE MATCHES"')
+				)
+					| There was an issue creating your registration. Please <contact GlobalLinks> to get an assigned username.
+				span(
+					ng-switch-when=('201')
+				)
+					| Your account has been created! Please use this username and password whenever you sign in to the volunteer portal.
+					a(ui-sref="checkin") You are logged in - click here for the checkin page.

@@ -1,5 +1,3 @@
 div#login.container-fluid
 	.row.col-md-4.col-centered.form-wrapper
 		ui-view(name="login")
-	.row.col-md-4.col-centered(ng-if="loginError")
-		p.text-danger.bg-danger.custom-msg {{ loginError }}

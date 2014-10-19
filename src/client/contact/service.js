@@ -15,4 +15,5 @@ angular.module('globallinks.contact.service', [
   })
 
   return Contact;
-});
+})
+;

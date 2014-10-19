@@ -7,6 +7,9 @@ div.login-form
 			input(type="password", for='password', placeholder="Password", ng-model="password")#password.form-control
 		.col-md-12.actions-wrapper
 			button(type="submit", ng-click="login()").btn.btn-default.btn-block LOGIN
+			p.text-danger.bg-danger.custom-msg(
+				ng-show="error"
+			) There was an error signing in. Please try again.
 			hr
 			span.sign-up
 				a(ui-sref='auth.signup') Already a volunteer, but need an account?
