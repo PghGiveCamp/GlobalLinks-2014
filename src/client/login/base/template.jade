@@ -1,12 +1,28 @@
 div.login-form
 	h2.title Volunteer Login
-	form(role="form")
+	form(
+		role="form"
+		name="credentials"
+	)
 		.form-group
-			input(type="text", for='username', placeholder="Username", ng-model="username")#username.form-control
+			input#username.form-control(
+				type="text"
+				name='username'
+				placeholder="Username"
+				ng-model="username"
+			)
 		.form-group
-			input(type="password", for='password', placeholder="Password", ng-model="password")#password.form-control
+			input#password.form-control(
+				type="password"
+				name='password'
+				placeholder="Password"
+				ng-model="password"
+			)
 		.col-md-12.actions-wrapper
-			button(type="submit", ng-click="login()").btn.btn-default.btn-block LOGIN
+			button.btn.btn-default.btn-block(
+				type="submit"
+				ng-click="login()"
+			) LOGIN
 			p.text-danger.bg-danger.custom-msg(
 				ng-show="error"
 			) There was an error signing in. Please try again.

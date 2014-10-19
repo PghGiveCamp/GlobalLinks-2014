@@ -1,9 +1,9 @@
 .Contact.container
   .row.form-wrapper
     h2.title Contact Details
-    form.horizontal-form(role="form")
+    form.horizontal-form(role="form", name="info")
       .form-group.row
-        label.col-md-2.control-label(for="name") Name
+        label.col-md-2.control-label(for="name") Name:
         .col-md-10
           input.form-control(
             type="text"
@@ -11,36 +11,41 @@
             disabled
             ng-model="volunteer.name"
           )
-      .form-group.row
-        label.col-md-2.control-label(for="street") Address
-        .col-md-4
+      .row
+        label.col-md-2.control-label(for="street") Address:
+        .col-md-4.form-group
           input.form-control(
             type="text"
             name="street"
             ng-model="volunteer.address"
           )
-        .col-md-3
+        .col-md-3.form-group
           input.form-control(
             type="text"
             name="city"
             ng-model="volunteer.city"
             placeholder="city"
           )
-        .col-md-1
+        .col-md-1.form-group
           select.form-control(
             name="state"
             ng-model="volunteer.state"
             ng-options="state for state in stateAbbreviations"
           )
-        .col-md-2
+        .col-md-2.form-group(
+          ng-class="{ 'has-error': info.zip.$invalid }"
+        )
           label.sr-only(for="zip")
           input.form-control(
             type="text"
             name="zip"
             ng-model="volunteer.zip"
             placeholder="12345"
+            ng-pattern="/[0-9]{5}(?:\-[0-9]{4})?/"
           )
-      .form-group.row
+      .form-group.row(
+        ng-class="{ 'has-error': info.homePhone.$invalid }"
+      )
         label.col-md-2.control-label(for="homePhone") Phone (H):
         .col-md-2
           input.form-control(
@@ -50,14 +55,18 @@
             placeholder="Home Phone"
           )
         label.col-md-2.control-label(for="homeEmail") Email (H):
-        .col-md-6
+        .col-md-6(
+          ng-class="{ 'has-error': info.homeEmail.$invalid }"
+        )
           input.form-control(
             type="email"
-            name="homePhone"
+            name="homeEmail"
             ng-model="volunteer.home_email"
             placeholder="volunteer@globallinks.org"
           )
-      .form-group.row
+      .form-group.row(
+        ng-class="{ 'has-error': info.workPhone.$invalid }"
+      )
         label.col-md-2.control-label(for="workPhone") Phone (W):
         .col-md-2
           input.form-control(
@@ -67,7 +76,9 @@
             placeholder="Work Phone"
           )
         label.col-md-2.control-label(for="workEmail") Email (W):
-        .col-md-6
+        .col-md-6(
+          ng-class="{ 'has-error': info.workEmail.$invalid }"
+        )
           input.form-control(
             type="email"
             name="workEmail"
@@ -76,7 +87,9 @@
           )
       .form-group.row
         label.col-md-2.control-label(for="mobilePhone") Phone (C):
-        .col-md-2
+        .col-md-2(
+          ng-class="{ 'has-error': info.mobilePhone.$invalid }"
+        )
           input.form-control(
             type="tel"
             name="mobilePhone"
@@ -84,7 +97,9 @@
             placeholder="Cell Phone"
           )
         label.col-md-2.control-label(for="mobileEmail") Email (C):
-        .col-md-6
+        .col-md-6(
+          ng-class="{ 'has-error': info.mobileEmail.$invalid }"
+        )
           input.form-control(
             type="email"
             name="mobileEmail"
@@ -109,7 +124,9 @@
             placeholder="Relationship"
           )
         label.col-md-1.control-label(for="emergencyPhone") Phone:
-        .col-md-2
+        .col-md-2(
+          ng-class="{ 'has-error': info.emergencyPhone.$invalid }"
+        )
           input.form-control(
             type="tel"
             name="emergencyPhone"

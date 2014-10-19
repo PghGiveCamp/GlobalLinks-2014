@@ -61,10 +61,10 @@ angular.module('globallinks.login.directive', [
 					$scope.request_reset_password = function() {
 						var ident = '';
 						$scope.sent_request = false;
-						if ($scope.username.length > 0) {
+						if ($scope.username) {
 							ident = $scope.username;
 						}
-						else if ($scope.email.length > 0) {
+						else if ($scope.email) {
 							ident = $scope.email;
 						}
 						return $http.post('/request_reset_password', {

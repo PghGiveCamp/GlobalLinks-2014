@@ -1,3 +1,4 @@
+require 'logger'
 require 'sinatra'
 require 'sinatra/cookies'
 require 'sinatra/json'
@@ -8,6 +9,8 @@ require 'rack/parser'
 require 'pony'
 
 require_relative 'password_hasher'
+
+$logger = Logger.new(STDOUT)
 
 if development? || test?
   require 'dotenv'
@@ -44,6 +47,14 @@ Pony.options = {
     domain: ENV.fetch('SMTP_DOMAIN')
   }
 }
+
+if production?
+  module Pony
+    def self.deliver(mail)
+      $logger.info("Would have sent mail: #{mail.inspect}")
+    end
+  end
+end
 
 migration 'create initial schema' do
   database.create_table :users do
@@ -108,6 +119,10 @@ end
 
 class Volunteer < Sequel::Model
   one_to_one :user
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
 end
 
 helpers do
@@ -126,6 +141,23 @@ helpers do
   def login(user_id)
     session[:user_id] = user_id
     cookies[:_li] = '1'
+  end
+
+  def send_password_reset(volunteer, token)
+    email_body = <<HTML
+      <p>Hello #{volunteer.full_name},</p>
+      <p>Click the link below to set your password.</p>
+      <p>
+        <a href="#{request.host}/auth/resetpassword/#{token}">
+          #{request.host}/auth/resetpassword/#{token}
+        </a>
+      </p>
+HTML
+    Pony.mail(
+      to: volunteer.preferred_email,
+      subject: 'Reset GlobalLinks Volunteer Portal Password',
+      html_body: email_body
+    )
   end
 end
 
@@ -211,6 +243,8 @@ post '/contact/checkout' do
 end
 
 post '/reset_password_request' do
+  halt 400 unless params[:user_identifier]
+
   volunteer = Volunteer.where(
     Sequel.expr(username: params[:user_identifier]) |
     Sequel.expr(preferred_email: params[:user_identifier])
@@ -221,7 +255,7 @@ post '/reset_password_request' do
   token = SecureRandom.uuid
   volunteer.user.update(reset_token: token)
 
-  # TODO: send e-mail
+  send_password_reset(volunteer, token)
 
   status 201
 end

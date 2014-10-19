@@ -8,6 +8,7 @@ ENV['SALT'] = '42'
 
 require 'volunteer_portal/app'
 require 'volunteer_portal/password_hasher'
+require 'volunteer_portal/stale_checkin_processor'
 
 Volunteer.unrestrict_primary_key
 
