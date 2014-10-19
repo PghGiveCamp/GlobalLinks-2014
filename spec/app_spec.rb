@@ -83,7 +83,7 @@ describe Sinatra::Application do
   describe 'POST /logout' do
     context 'when not signed in' do
       before do
-        post '/logout', nil, {'rack.session' => {}}
+        post '/logout'
       end
 
       it 'returns 401' do
@@ -92,12 +92,8 @@ describe Sinatra::Application do
     end
 
     context 'when signed in' do
-      let :rack_session do
-        {username: created_user.username}
-      end
-
       before do
-        post '/logout', nil, {'rack.session' => rack_session}
+        post '/logout', nil, 'rack.session' => rack_session
       end
 
       it 'returns 201' do
