@@ -101,7 +101,7 @@ describe Sinatra::Application do
       end
 
       it 'returns 201' do
-        expect(last_response.status).to eql(201)
+        expect(last_response.status).to eql(204)
       end
 
       it 'clears the session' do
@@ -191,13 +191,6 @@ describe Sinatra::Application do
           expect(last_response.status).to eq(412)
         end
       end
-    end
-  end
-
-  describe 'POST /logout' do
-    it 'returns 204 No Content' do
-      post '/logout'
-      expect(last_response.status).to eq(204)
     end
   end
 
