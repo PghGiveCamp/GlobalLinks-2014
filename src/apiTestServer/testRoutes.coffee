@@ -26,7 +26,8 @@ module.exports = (app, config)->
       "emergency_name": null,
       "emergency_phone": null,
       "emergency_relationship": null,
-      "emergency_phone_type": null
+      "emergency_phone_type": null,
+      "checked_in": true
   app.post '/contact', (q, r)->
     r.status(200).send()
   app.post '/contact/checkin', (q, r)->
