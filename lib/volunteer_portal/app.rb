@@ -69,6 +69,12 @@ migration 'create volunteer table' do
     String :emergency_phone_type, null: true
   end
 end
+exposed_volunteer_fields = [ :address, :city, :state, :zip, :country,
+                             :home_phone, :mobile_phone, :work_phone,
+                             :home_email, :alternate_email, :work_email,
+                             :emergency_name, :emergency_phone,
+                             :emergency_relationship, :emergency_phone_type,
+                             :checked_in, :volunteer_hours, :last_checkin ]
 
 Sequel::Model.plugin :json_serializer
 
@@ -126,7 +132,7 @@ end
 post '/contact' do
   halt 401 unless signed_in?
 
-  json current_user.volunteer.update(params)
+  json current_user.volunteer.update_fields(params, exposed_volunteer_fields)
 end
 
 post '/login' do
