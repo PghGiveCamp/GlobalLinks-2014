@@ -49,3 +49,5 @@ module.exports = (app, config)->
       return r.status(401).send()
     else
       return r.status(201).json( { username: q.body.username } )
+  app.post '/request_reset_password', (q, r)->
+    r.status(200).send()

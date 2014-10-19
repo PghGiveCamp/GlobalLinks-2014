@@ -1,8 +1,26 @@
 div.password-form
 	h2.title Reset Password
 	form(role="form")
-		p.col-md-12 Tell us your email and we'll send you a personalized link to reset your password.
+		p.col-md-12 Tell us your email address or your username and we'll send you a personalized link to reset your password.
 		.form-group
-			input(type="text", for='username', placeholder="Email Address")#username.form-control
-		.col-md-12.actions-wrapper
-			button(type="submit").btn.btn-default.btn-block SEND EMAIL
+			input#email.form-control(
+				type="text"
+				for='email'
+				placeholder="Email Address"
+				ng-model="email"
+			)
+		.form-group
+			input#username.form-control(
+				type="text"
+				for='username'
+				placeholder="Username"
+				ng-model="username"
+			)
+		.actions-wrapper
+			button.btn.btn-default.btn-block(
+				type="submit"
+				ng-click="request_reset_password()"
+			) REQUEST PASSWORD RESET
+		p.text-info.bg-info.custom-msg(
+			ng-show="sent_request"
+		) A request to reset your password has been sent. Please check your email for your personalized link.

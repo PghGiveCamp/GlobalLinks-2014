@@ -56,7 +56,28 @@ angular.module('globallinks.login.directive', [
 		url: '/resetpassword',
 		views: {
  			'login': {
-				templateUrl: 'login/resetpassword'
+				templateUrl: 'login/resetpassword',
+				controller: function($http, $scope) {
+					$scope.request_reset_password = function() {
+						var ident = '';
+						$scope.sent_request = false;
+						if ($scope.username.length > 0) {
+							ident = $scope.username;
+						}
+						else if ($scope.email.length > 0) {
+							ident = $scope.email;
+						}
+						return $http.post('/request_reset_password', {
+							user_identifier: ident
+						}).then(
+							function(response){
+								$scope.sent_request = true;
+							},
+							function(error){
+							}
+						);
+					}
+				}
  			}
 		}
 	},

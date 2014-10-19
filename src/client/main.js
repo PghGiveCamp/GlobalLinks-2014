@@ -10,10 +10,10 @@ angular.module('globallinks', [
 	$scope.auth = LoginSvc;
 	$scope.quotes = VolunteerQuotes;
   $scope.quoteIndex = 0;
-  $timeout(function advanceSlide() {
+  $timeout(function advanceQuote() {
       $scope.quoteIndex = ($scope.quoteIndex + 1) % VolunteerQuotes.length;
       $scope.selectedQuote = VolunteerQuotes[$scope.quoteIndex];
-      $timeout(advanceSlide, 10000);
+      $timeout(advanceQuote, 10000);
   });
   $scope.isActive = function (viewLocation) { 
     return viewLocation === $location.path();
