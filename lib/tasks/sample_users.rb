@@ -1,37 +1,57 @@
-def get_sample_users
-  require 'faraday'
-  require 'faraday_middleware'
-  require 'uri'
+module Tasks
+  class SampleUsers
+    def initialize
+      require 'faraday'
+      require 'faraday_middleware'
+      require 'uri'
+    end
 
-  github_token = ENV['GITHUB_TOKEN']
-  github_api = ENV['GITHUB_API'] || 'https://api.github.com'
+    def fetch
+      JSON.pretty_generate(
+        build_users(
+          conn.get('/repos/globallinks/volunteer-portal/contributors').body
+        )
+      )
+    end
 
-  conn = Faraday.new(url: github_api) do |faraday|
-    faraday.basic_auth(github_token, 'x-oauth-basic') if github_token
-    faraday.response :json, content_type: /\bjson$/
-    faraday.adapter Faraday.default_adapter
+    private
+
+    def build_users(collaborators)
+      collaborators.each_with_object({}) do |user, h|
+        email = conn.get(URI(user.fetch('url')).path).body['email']
+        next if email.nil? || email.empty?
+
+        h[email] = {
+          username: user.fetch('login'),
+          password: 'changeme'
+        }
+      end
+    end
+
+    def conn
+      @conn ||= Faraday.new(url: github_api) do |faraday|
+        faraday.basic_auth(github_token, 'x-oauth-basic') if github_token
+        faraday.response :json, content_type: /\bjson$/
+        faraday.adapter Faraday.default_adapter
+      end
+    end
+
+    def github_token
+      @github_token ||= ENV['GITHUB_TOKEN']
+    end
+
+    def github_api
+      @github_api ||= ENV['GITHUB_API'] || 'https://api.github.com'
+    end
   end
-
-  response = conn.get('/repos/globallinks/volunteer-portal/contributors')
-  users = response.body.each_with_object({}) do |user, h|
-    email = conn.get(URI(user.fetch('url')).path).body['email']
-    next if email.nil? || email.empty?
-
-    h[email] = {
-      username: user.fetch('login'),
-      password: 'changeme'
-    }
-  end
-
-  JSON.pretty_generate(users)
 end
 
 task :print_sample_users do
-  puts get_sample_users
+  puts sample_users
 end
 
 task :generate_sample_users do
   outfile = File.expand_path('../../../sampledata/users.json', __FILE__)
-  File.write(outfile, get_sample_users)
+  File.write(outfile, sample_users)
   puts "new users written to #{outfile}"
 end

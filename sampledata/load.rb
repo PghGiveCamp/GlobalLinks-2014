@@ -15,7 +15,8 @@ module Sampledata
 
   class Loader
     def load_volunteers(file = 'volunteers.csv')
-      %x{psql '#{db.url}' -a -c "\\copy volunteers FROM '#{file}' DELIMITER ',' CSV HEADER"}
+      sql = "\\copy volunteers FROM '#{file}' DELIMITER ',' CSV HEADER"
+      `psql '#{db.url}' -a -c "#{sql}"`
     end
 
     def load_users(users = users)
