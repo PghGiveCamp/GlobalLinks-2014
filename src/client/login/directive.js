@@ -38,6 +38,16 @@ angular.module('globallinks.login.directive', [
 					};
 				}
 			}
+		},
+		resolve: {
+			auth: function($q, $state, LoginSvc){
+				if(LoginSvc.isLoggedIn()){
+					$state.go('checkin');
+					return $q.reject('Redirecting...');
+				} else {
+					return true;
+				}
+			}
 		}
 	},
 	resetPassword = {

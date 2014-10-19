@@ -1,7 +1,8 @@
 angular.module('globallinks.contact', [
   'ui.router',
   'contact.template',
-  'globallinks.contact.service'
+  'globallinks.contact.service',
+  'globallinks.login.service'
 ])
 .config(function($stateProvider){
   $stateProvider.state({
@@ -11,6 +12,11 @@ angular.module('globallinks.contact', [
       'main': {
         templateUrl: 'contact',
         controller: 'ContactCtrl',
+      }
+    },
+    resolve: {
+      auth: function($q, LoginSvc){
+        return LoginSvc.isLoggedInQ();
       }
     }
   });

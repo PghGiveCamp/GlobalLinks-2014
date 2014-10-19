@@ -3,6 +3,9 @@ angular.module('globallinks', [
 	'globallinks.contact',
 	'globallinks.checkin'
 ])
+.config(function($urlRouterProvider){
+	$urlRouterProvider.otherwise('/auth/login');
+})
 .controller('mainCtrl', function($scope, LoginSvc, VolunteerQuotes, $location, $timeout){
 	$scope.auth = LoginSvc;
 	$scope.quotes = VolunteerQuotes;
