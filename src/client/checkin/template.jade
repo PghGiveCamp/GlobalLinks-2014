@@ -2,7 +2,15 @@ div#checkin.container-fluid(
 	ng-switch="volunteer.status"
 )
 	.row.col-md-4.col-centered.form-wrapper
-		h4.instructions Please check-in to indicate that you've started your volunteer shift.
+		h4.instructions(
+			ng-switch-default
+		) Please check-in to indicate that you've started your volunteer shift.
+		h4.instructions(
+			ng-switch-when="started"
+		) Please check-out when you've finished your volunteer shift.
+		h4.instructions(
+			ng-switch-when="done"
+		) You're done!
 		button.btn.btn-default.btn-block(
 			type="submit",
 			ng-switch-default,
