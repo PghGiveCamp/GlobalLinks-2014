@@ -30,7 +30,7 @@ module Sampledata
       db[:users] << {
         username: user[:username],
         email: email,
-        volunteer_id: volunteer_id,
+        volunteer_id: volunteer_id(email),
         password: hasher.hash_password(user[:raw_password])
       }
     end
