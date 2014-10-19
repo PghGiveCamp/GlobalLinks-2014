@@ -33,6 +33,13 @@ cp -v .example.env .env
 
 * `DATABASE_URL` - the postgresql database URL
 * `SALT` - the salt used for server-side password hashing
+* `SMTP_HOST` - smtp host (e.g. "smtp.gmail.com")
+* `SMTP_PORT` - smtp port (e.g. 587)
+* `SMTP_TLS` - should we use tls?  ("true"/"false")
+* `SMTP_USERNAME` - smtp username (e.g. "whatever.username")
+* `SMTP_PASSWORD` - smtp password
+* `SMTP_AUTH` - smtp auth type (e.g. "plain")
+* `SMTP_DOMAIN` - smtp domain (e.g. "localhost.localdomain")
 
 ### database setup
 
