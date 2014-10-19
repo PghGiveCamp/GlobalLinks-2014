@@ -18,14 +18,48 @@ def dbuser
   @dbuser ||= dburl.user || `whoami`
 end
 
-task :npm_install do
-  sh 'npm install'
+def sampledata_dir
+  File.expand_path('../../../sampledata', __FILE__)
 end
 
-task :psql_createdb do
-  if `psql -l -t -A`.split("\n").grep(/^#{dbname}\|/).empty?
-    sh "createdb #{dbname} --owner #{dbuser}"
+namespace :setup do
+  task :npm_install do
+    sh 'npm install'
+  end
+
+  task :psql_createdb do
+    if `psql -l -t -A`.split("\n").grep(/^#{dbname}\|/).empty?
+      sh "createdb #{dbname} --owner #{dbuser}"
+    end
+  end
+
+  task :migrate do
+    $LOAD_PATH << File.expand_path('../../', __FILE__)
+    require 'volunteer_portal/app'
+  end
+
+  task :load_sampledata do
+    Dir.chdir(sampledata_dir) do
+      sh "psql '#{ENV['DATABASE_URL']}' < load.sql"
+      require './load'
+      Sampledata.load_all
+    end
   end
 end
 
-task setup: [:npm_install, :psql_createdb]
+namespace :reset do
+  task :wipe_sampledata do
+    Dir.chdir(sampledata_dir) do
+      sh "psql '#{ENV['DATABASE_URL']}' < wipe.sql"
+    end
+  end
+end
+
+task reset: [:'reset:wipe_sampledata']
+
+task setup: [
+  :'setup:npm_install',
+  :'setup:psql_createdb',
+  :'setup:migrate',
+  :'setup:load_sampledata'
+]

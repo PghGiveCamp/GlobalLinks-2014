@@ -4,12 +4,13 @@ services:
 env:
   global:
   - DATABASE_URL='postgres://postgres@localhost:5432/globallinks_travis'
-  - SMTP_HOST=smtp.gmail.com
-  - SMTP_PORT=587
-  - SMTP_TLS=true
-  - SMTP_USERNAME=globallinks.heroku
-  - SMTP_AUTH=plain
-  - SMTP_DOMAIN=localhost.localdomain
+  - SALT='a1b2c3d4'
+  - SMTP_HOST='smtp.gmail.com'
+  - SMTP_PORT='587'
+  - SMTP_TLS='true'
+  - SMTP_USERNAME='globallinks.heroku'
+  - SMTP_AUTH='plain'
+  - SMTP_DOMAIN='localhost.localdomain'
   # SMTP_PASSWORD is set in travis repository settings
 before_script:
 - nvm use 0.10
@@ -17,10 +18,10 @@ before_script:
 script:
 - bundle exec rake
 - npm test
-deploy:
-  provider: heroku
-  api_key:
-    secure: DbjhntwnhcOmOlhevPXvha5+g25kYwHt27Xe7KkpqQSbR8FRK524A0l8pdJQsIsm2Cumr2RFWfX3L5tqqPQqq17s09/tN5PREQs9IjYHfec/2YWtkYyvGT75m2mGO3TUcPscT6FTyXwjwuYx6Oc9BDnjcMS0BaoXl0fN3k0epeQ=
-  app: globallinks-volunteer-portal
-  on:
-    repo: globallinks/volunteer-portal
+# deploy:
+#   provider: heroku
+#   api_key:
+#     secure: DbjhntwnhcOmOlhevPXvha5+g25kYwHt27Xe7KkpqQSbR8FRK524A0l8pdJQsIsm2Cumr2RFWfX3L5tqqPQqq17s09/tN5PREQs9IjYHfec/2YWtkYyvGT75m2mGO3TUcPscT6FTyXwjwuYx6Oc9BDnjcMS0BaoXl0fN3k0epeQ=
+#   app: globallinks-volunteer-portal
+#   on:
+#     repo: globallinks/volunteer-portal

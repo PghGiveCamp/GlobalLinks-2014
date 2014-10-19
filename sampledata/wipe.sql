@@ -1,0 +1,2 @@
+TRUNCATE volunteers;
+TRUNCATE users;

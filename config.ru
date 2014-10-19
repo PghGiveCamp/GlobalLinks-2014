@@ -1,8 +1,4 @@
-require 'rack/parser'
-require './lib/volunteer_portal/app'
-
-use Rack::Parser, :content_types => {
-  'application/json'  => Proc.new { |body| JSON.parse(body) }
-}
+$LOAD_PATH << File.expand_path('../lib', __FILE__)
+require 'volunteer_portal/app'
 
 run Sinatra::Application
