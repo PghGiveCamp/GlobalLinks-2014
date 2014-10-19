@@ -6,6 +6,7 @@ gem 'dalli'
 gem 'execjs'  # to trigger node install on heroku
 gem 'pg'
 gem 'rake'
+gem 'rack-parser'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sinatra-sequel'

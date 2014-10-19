@@ -41,6 +41,8 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     rack (1.5.2)
+    rack-parser (0.6.1)
+      rack
     rack-protection (1.5.3)
       rack
     rack-test (0.6.2)
@@ -117,6 +119,7 @@ DEPENDENCIES
   execjs
   pg
   pry
+  rack-parser
   rack-test
   rake
   rerun
