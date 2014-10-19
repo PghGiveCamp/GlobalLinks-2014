@@ -11,6 +11,7 @@ gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'sinatra-sequel'
 gem 'thin'
+gem 'pony'
 
 group :development, :test do
   gem 'coveralls', require: false

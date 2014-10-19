@@ -20,6 +20,9 @@ RSpec.configure do |c|
       example.run
     end
   end
+  c.before(:each) do
+    allow(Pony).to receive(:msg) {}
+  end
 end
 
 SimpleCov.start

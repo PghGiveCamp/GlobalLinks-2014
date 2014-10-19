@@ -4,6 +4,7 @@ require 'sinatra/json'
 require 'sinatra/sequel'
 require 'dalli'
 require 'rack/session/dalli'
+require 'pony'
 
 require_relative 'password_hasher'
 
@@ -24,6 +25,19 @@ configure do
     use Rack::Session::Dalli, cache: Dalli::Client.new
   end
 end
+
+Pony.options = {
+  via: :smtp,
+  via_options: {
+    address: ENV.fetch('SMTP_HOST'),
+    port: ENV.fetch('SMTP_PORT'),
+    enable_starttls_auto: ENV.fetch('SMTP_TLS'),
+    user_name: ENV.fetch('SMTP_USERNAME'),
+    password: ENV.fetch('SMTP_PASSWORD'),
+    authentication: ENV.fetch('SMTP_AUTH'),
+    domain: ENV.fetch('SMTP_DOMAIN')
+  }
+}
 
 migration 'create users table' do
   database.create_table :users do
