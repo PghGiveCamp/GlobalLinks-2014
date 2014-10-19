@@ -110,14 +110,6 @@ get '/' do
   send_file 'www/index.html', type: :html
 end
 
-get '/user/:id' do
-  json user: database[:users].filter(id: params[:id]).first
-end
-
-put '/user/:id' do
-  status 501
-end
-
 post '/user' do
   email = params[:email]
   username = params[:username]
