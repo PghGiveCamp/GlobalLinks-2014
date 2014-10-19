@@ -4,11 +4,12 @@ require 'sinatra/json'
 require 'sinatra/sequel'
 require 'dalli'
 require 'rack/session/dalli'
+require 'rack/parser'
 require 'pony'
 
 require_relative 'password_hasher'
 
-if Sinatra::Base.development? || Sinatra::Base.test?
+if development? || test?
   require 'dotenv'
   Dotenv.load
 end
@@ -21,9 +22,14 @@ enable :static
 set :database, ENV.fetch('DATABASE_URL')
 
 configure do
-  unless ENV['RACK_ENV'] == 'test'
-    use Rack::Session::Dalli, cache: Dalli::Client.new
-  end
+  use Rack::Session::Dalli, cache: Dalli::Client.new unless test?
+  use Rack::Parser, content_types: {
+    /^application\/json/ => proc do |body|
+      JSON.parse(body).each_with_object({}) do |(k, v), h|
+        h[k.to_sym] = v
+      end
+    end
+  }
 end
 
 Pony.options = {
@@ -39,7 +45,7 @@ Pony.options = {
   }
 }
 
-migration 'create users table' do
+migration 'create initial schema' do
   database.create_table :users do
     primary_key :id
     String :username, null: false
@@ -52,9 +58,7 @@ migration 'create users table' do
 
     index :username
   end
-end
 
-migration 'create volunteer table' do
   database.create_table :volunteers do
     String :id, null: false, primary_key: true
     String :volunteer_status, null: true
@@ -84,12 +88,17 @@ migration 'create volunteer table' do
     String :emergency_phone_type, null: true
   end
 end
-exposed_volunteer_fields = [:address, :city, :state, :zip, :country,
-                            :home_phone, :mobile_phone, :work_phone,
-                            :home_email, :alternate_email, :work_email,
-                            :emergency_name, :emergency_phone,
-                            :emergency_relationship, :emergency_phone_type,
-                            :checked_in, :volunteer_hours, :last_checkin]
+
+module VolunteerPortal
+  EXPOSED_VOLUNTEER_FIELDS = [
+    :address, :city, :state, :zip, :country,
+    :home_phone, :mobile_phone, :work_phone,
+    :home_email, :alternate_email, :work_email,
+    :emergency_name, :emergency_phone,
+    :emergency_relationship, :emergency_phone_type,
+    :checked_in, :volunteer_hours, :last_checkin
+  ]
+end
 
 Sequel::Model.plugin :json_serializer
 
@@ -157,7 +166,9 @@ end
 post '/contact' do
   halt 401 unless signed_in?
 
-  json current_user.volunteer.update_fields(params, exposed_volunteer_fields)
+  json current_user.volunteer.update_fields(
+    params, VolunteerPortal::EXPOSED_VOLUNTEER_FIELDS
+  )
 end
 
 post '/login' do
