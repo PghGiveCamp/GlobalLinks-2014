@@ -135,9 +135,9 @@ post '/user' do
   end
 
   user = User.create(username: username,
-              email: email,
-              password: hasher.hash_password(params[:password]),
-              volunteer_id: volunteer.id)
+                     email: email,
+                     password: hasher.hash_password(params[:password]),
+                     volunteer_id: volunteer.id)
   login(user.id)
   status 201
 end
