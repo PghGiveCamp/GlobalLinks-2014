@@ -1,5 +1,6 @@
-@import "./node_modules/rupert-config-angular-bootstrap/node_modules/bootstrap/less/variables";
+@import "./src/client/variables.less";
 
+// layout helpers
 .col-centered {
 	float: none;
 	margin: 0 auto;
@@ -17,4 +18,85 @@
 	color: white;
 	text-shadow: none;
 	letter-spacing: 0.125em;
+}
+
+.red-border {
+	border-top: 9px solid @red;
+}
+
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+// page-specific styles
+// background
+body {
+	background: url("/assets/images/bkgd.gif") top center;
+}
+// header 
+#header {
+	padding-bottom: 1em;
+	background-color: white;
+	.logo {
+		width: 75%;
+	}
+	.quote-wrapper {
+		text-align: right;
+		font-style: italic;
+		font-size: 0.8em;
+		color: @blue;
+		.author {
+			padding-left: 1.5em;
+		}
+	}
+}
+// override bootstrap defaults: navbar
+.navbar {
+	border-radius: 0px;
+	li.active a {
+		background-color: @blue;
+	}
+}
+
+
+// form wrappers
+.form-wrapper {
+	&:extend(.red-border);
+	background-color: @lightGray;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+
+// animation for quotes
+.fade {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    opacity: 1;
+}
+.fade.ng-enter,
+.fade.ng-leave {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+}
+.fade.ng-enter {
+    opacity: 0;
+}
+.fade.ng-enter-active {
+    opacity: 1;
+}
+.fade.ng-leave {
+    opacity: 1;
+}
+.fade.ng-leave-active {
+    opacity: 0;
 }

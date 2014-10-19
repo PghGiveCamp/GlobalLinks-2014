@@ -14,9 +14,17 @@ html(lang='en', ng-app='globallinks')
     script(src="/vendors.js")
 
   body(ng-controller='mainCtrl')
-    .container
-      nav.navbar.navbar-default(role="navigation")
-        .container-fluid
+    .container-full#header
+      .container
+        .row
+          .image-wrapper.col-md-4.vcenter
+            img(src="/assets/images/gl-logo.png").logo
+          .quote-wrapper.col-md-8.vcenter
+            span.quote global links is awesome, come volunteer for us
+            span.author -anonymous
+    .container-full
+      nav.navbar.navbar-default.navbar-inverse(role="navigation")
+        .container
           .navbar-header
             button.navbar-toggle.collapsed(
               type="button"
@@ -27,21 +35,27 @@ html(lang='en', ng-app='globallinks')
               span.icon-bar
               span.icon-bar
               span.icon-bar
-            a.navbar-brand Volunteer Portal
+            span.navbar-brand Volunteer Portal
           .navbar-collapse.collapse
             ul.nav.navbar-nav
-              li
+              li(
+                ng-class="{ active: isActive('/contact')}"
+              )
                 a(
                   ng-if="auth.isLoggedIn()"
                   ui-sref='contact'
                 ) Profile
-              li
+              li(
+                ng-class="{ active: isActive('/checkin')}"
+              )
                 a(
                   ng-if="auth.isLoggedIn()"
                   ui-sref='checkin'
                 ) Check-in
             ul.nav.navbar-nav.navbar-right
-              li
+              li(
+                ng-class="{ active: isActive('/login')}"
+              )
                 a(
                   ng-if="!auth.isLoggedIn()"
                   ui-sref='auth.login'

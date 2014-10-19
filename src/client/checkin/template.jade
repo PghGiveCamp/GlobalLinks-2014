@@ -1,9 +1,8 @@
 div#checkin.container-fluid(
 	ng-switch="volunteer.status"
 )
-	.row.col-md-4.col-centered
-		img(src="/assets/images/gl-logo.png").logo
 	.row.col-md-4.col-centered.form-wrapper
+		h4.instructions Please check-in to indicate that you've started your volunteer shift.
 		button.btn.btn-default.btn-block(
 			type="submit",
 			ng-switch-default,
@@ -14,7 +13,6 @@ div#checkin.container-fluid(
 			ng-switch-when="started",
 			ng-click="checkout()"
 		) CHECKOUT
-	.row.col-md-4.col-centered(
-		ng-switch-when="done"
-	)
-		p.text-success.bg-success.custom-msg Thank you for volunteering!
+		p.text-success.bg-success.custom-msg(
+			ng-switch-when="done"
+		) Thank you for volunteering!
