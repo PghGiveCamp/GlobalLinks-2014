@@ -1,9 +1,7 @@
 module Tasks
   class SampleUsers
     def initialize
-      require 'faraday'
-      require 'faraday_middleware'
-      require 'uri'
+      require_everything
     end
 
     def fetch
@@ -15,6 +13,14 @@ module Tasks
     end
 
     private
+
+    def require_everything
+      require 'faraday'
+      require 'faraday_middleware'
+      require 'json'
+      require 'uri'
+    end
+
 
     def build_users(collaborators)
       collaborators.each_with_object({}) do |user, h|
@@ -47,11 +53,11 @@ module Tasks
 end
 
 task :print_sample_users do
-  puts sample_users
+  puts Tasks::SampleUsers.new.fetch
 end
 
 task :generate_sample_users do
   outfile = File.expand_path('../../../sampledata/users.json', __FILE__)
-  File.write(outfile, sample_users)
+  File.write(outfile, Tasks::SampleUsers.new.fetch)
   puts "new users written to #{outfile}"
 end
