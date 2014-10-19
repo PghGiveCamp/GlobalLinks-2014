@@ -10,9 +10,13 @@ angular.module('globallinks.checkin.directive', [
 				templateUrl: 'checkin',
 				controller: 'CheckinCtrl'
  			}
+		},
+		resolve: {
+			auth: function($q, LoginSvc){
+				return LoginSvc.isLoggedInQ();
+			}
 		}
-	}
-
+	};
 	$stateProvider.state(checkin);
 })
 .controller('CheckinCtrl', function($scope, ContactSvc){
