@@ -1,0 +1,8 @@
+div.reset-form
+  h2.title Reset Password
+  form(role="form")
+    p.col-md-12 Choose your new password.
+    .form-group
+      input(type="password", placeholder="New Password", ng-model="password").form-control
+    .col-md-12.actions-wrapper
+      button(type="submit", ng-click="reset()").btn.btn-default.btn-block RESET PASSWORD

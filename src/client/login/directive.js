@@ -1,6 +1,7 @@
 angular.module('globallinks.login.directive', [
 	'ui.router',
 	'globallinks.login.service',
+	'globallinks.login.resetpasswordToken',
 	'login.template',
 	'login.base.template',
 	'login.resetpassword.template',
